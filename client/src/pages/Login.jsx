@@ -1,5 +1,5 @@
 // src/pages/Login.jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -10,18 +10,11 @@ export default function Login() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  // Removed mouse tracking (dead code)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,368 +35,197 @@ export default function Login() {
     setLoading(false);
   };
 
+  // Theme Constants
+  const borderColor = '#27272a';
+  const bgColor = '#09090b';
+
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#0a0a0a',
+      background: bgColor,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2rem',
-      position: 'relative',
-      overflow: 'hidden'
+      // Engineer's Grid Background
+      backgroundImage: 'linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)',
+      backgroundSize: '40px 40px',
     }}>
-      {/* Floating Gradient Orbs */}
-      <div style={{
-        position: 'absolute',
-        width: '500px',
-        height: '500px',
-        background: 'radial-gradient(circle, rgba(167, 139, 250, 0.2), transparent 70%)',
-        borderRadius: '50%',
-        filter: 'blur(80px)',
-        top: '20%',
-        left: '10%',
-        transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
-        transition: 'transform 0.3s ease-out',
-        animation: 'float 15s ease-in-out infinite'
-      }} />
-      <div style={{
-        position: 'absolute',
-        width: '400px',
-        height: '400px',
-        background: 'radial-gradient(circle, rgba(249, 168, 212, 0.2), transparent 70%)',
-        borderRadius: '50%',
-        filter: 'blur(80px)',
-        bottom: '20%',
-        right: '10%',
-        transform: `translate(${mousePosition.x * -0.015}px, ${mousePosition.y * -0.015}px)`,
-        transition: 'transform 0.3s ease-out',
-        animation: 'float 20s ease-in-out infinite reverse'
-      }} />
 
-      {/* Login Card */}
+      {/* Login Card - Structural & Solid */}
       <div style={{
-        background: 'rgba(255, 255, 255, 0.03)',
-        backdropFilter: 'blur(20px)',
-        padding: '3rem 2.5rem',
-        borderRadius: '24px',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4)',
+        background: bgColor,
+        border: `1px solid ${borderColor}`,
+        borderRadius: '8px',
+        padding: '2.5rem',
         width: '100%',
-        maxWidth: '480px',
-        position: 'relative',
-        zIndex: 10,
-        animation: 'fadeInUp 0.8s ease-out'
+        maxWidth: '420px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
       }}>
-        {/* Logo & Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+        
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
-            width: '80px',
-            height: '80px',
-            background: 'linear-gradient(135deg, #a78bfa, #f9a8d4)',
-            borderRadius: '20px',
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.5rem',
-            fontSize: '2rem',
-            boxShadow: '0 15px 35px rgba(167, 139, 250, 0.4)',
-            animation: 'glow 3s ease-in-out infinite'
+            width: '48px',
+            height: '48px',
+            background: '#18181b',
+            borderRadius: '8px',
+            border: `1px solid ${borderColor}`,
+            fontSize: '1.5rem',
+            marginBottom: '1.5rem'
           }}>
             🎓
           </div>
           <h2 style={{
-            fontSize: '2.25rem',
-            fontWeight: 900,
-            background: 'linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            marginBottom: '0.75rem',
+            fontSize: '1.75rem',
+            fontWeight: 800,
+            color: '#fff',
+            marginBottom: '0.5rem',
             letterSpacing: '-0.02em'
           }}>
-            Welcome Back
+            Welcome back
           </h2>
           <p style={{ 
-            color: 'rgba(255, 255, 255, 0.6)', 
-            fontSize: '15px',
+            color: '#a1a1aa', 
+            fontSize: '14px',
             lineHeight: 1.6
           }}>
-            Sign in to access your academic resources
+            Sign in to access your academic resources.
           </p>
         </div>
 
         {/* Error Message */}
         {error && (
           <div style={{
-            background: 'rgba(239, 68, 68, 0.15)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
+            background: 'rgba(127, 29, 29, 0.2)', // Dark red tint
+            border: '1px solid #7f1d1d',
             color: '#fca5a5',
-            padding: '1rem 1.25rem',
-            borderRadius: '12px',
+            padding: '0.75rem',
+            borderRadius: '6px',
+            fontSize: '13px',
             marginBottom: '1.5rem',
-            fontSize: '14px',
-            fontWeight: 500,
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
-            animation: 'shake 0.5s ease-in-out'
+            gap: '0.5rem'
           }}>
-            <span style={{ fontSize: '1.25rem' }}>⚠️</span>
+            <span>⚠️</span>
             {error}
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit}>
-          {/* Email Input */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '0.75rem',
-              color: 'rgba(255, 255, 255, 0.9)',
-              fontWeight: 700,
-              fontSize: '14px',
-              letterSpacing: '0.05em'
-            }}>
-              EMAIL ADDRESS
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              style={{
-                width: '100%',
-                padding: '1rem 1.25rem',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                fontSize: '16px',
-                color: 'white',
-                outline: 'none',
-                transition: 'all 0.3s ease',
-                backdropFilter: 'blur(10px)'
-              }}
-              placeholder="your@email.com"
-              onFocus={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.08)';
-                e.target.style.borderColor = '#a78bfa';
-                e.target.style.boxShadow = '0 0 0 3px rgba(167, 139, 250, 0.15)';
-              }}
-              onBlur={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                e.target.style.boxShadow = 'none';
-              }}
-            />
-          </div>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          
+          <FormInput
+            label="Email Address"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="your@email.com"
+            required
+          />
 
-          {/* Password Input */}
-          <div style={{ marginBottom: '2rem' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '0.75rem',
-              color: 'rgba(255, 255, 255, 0.9)',
-              fontWeight: 700,
-              fontSize: '14px',
-              letterSpacing: '0.05em'
-            }}>
-              PASSWORD
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              style={{
-                width: '100%',
-                padding: '1rem 1.25rem',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                fontSize: '16px',
-                color: 'white',
-                outline: 'none',
-                transition: 'all 0.3s ease',
-                backdropFilter: 'blur(10px)'
-              }}
-              placeholder="••••••••"
-              onFocus={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.08)';
-                e.target.style.borderColor = '#a78bfa';
-                e.target.style.boxShadow = '0 0 0 3px rgba(167, 139, 250, 0.15)';
-              }}
-              onBlur={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                e.target.style.boxShadow = 'none';
-              }}
-            />
-          </div>
+          <FormInput
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="••••••••"
+            required
+          />
 
-          {/* Submit Button */}
+          {/* Submit Button - Solid White */}
           <button
             type="submit"
             disabled={loading}
             style={{
+              marginTop: '0.5rem',
               width: '100%',
-              padding: '1rem 1.5rem',
-              background: loading 
-                ? 'linear-gradient(135deg, #6b7280, #4b5563)' 
-                : 'linear-gradient(135deg, #a78bfa, #f9a8d4)',
-              color: 'white',
+              padding: '0.75rem',
+              background: loading ? '#27272a' : '#ffffff',
+              color: loading ? '#a1a1aa' : '#000000',
               border: 'none',
-              borderRadius: '12px',
-              fontSize: '16px',
-              fontWeight: 700,
+              borderRadius: '6px',
+              fontSize: '14px',
+              fontWeight: 600,
               cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.4s ease',
-              marginBottom: '2rem',
-              boxShadow: loading 
-                ? '0 4px 15px rgba(0, 0, 0, 0.2)'
-                : '0 10px 30px rgba(167, 139, 250, 0.4)',
+              transition: 'opacity 0.2s ease',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.75rem'
+              gap: '0.5rem'
             }}
-            onMouseEnter={(e) => {
-              if (!loading) {
-                e.target.style.transform = 'translateY(-3px) scale(1.02)';
-                e.target.style.boxShadow = '0 15px 40px rgba(167, 139, 250, 0.6)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0) scale(1)';
-              e.target.style.boxShadow = loading 
-                ? '0 4px 15px rgba(0, 0, 0, 0.2)'
-                : '0 10px 30px rgba(167, 139, 250, 0.4)';
-            }}
+            onMouseEnter={(e) => !loading && (e.target.style.opacity = '0.9')}
+            onMouseLeave={(e) => !loading && (e.target.style.opacity = '1')}
           >
-            {loading ? (
-              <>
-                <span style={{ animation: 'spin 1s linear infinite' }}>⏳</span>
-                Signing In...
-              </>
-            ) : (
-              <>
-                <span>🚀</span>
-                Sign In
-              </>
-            )}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
 
-          {/* Sign Up Link */}
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ 
-              color: 'rgba(255, 255, 255, 0.6)', 
-              fontSize: '14px',
-              lineHeight: 1.6
-            }}>
-              Don't have an account?{' '}
-              <Link 
-                to="/register" 
-                style={{ 
-                  background: 'linear-gradient(90deg, #a78bfa, #f9a8d4)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  textDecoration: 'none', 
-                  fontWeight: 700,
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.textDecoration = 'underline';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.textDecoration = 'none';
-                }}
-              >
-                Sign up here
-              </Link>
-            </p>
+          {/* Register Link */}
+          <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '14px', color: '#a1a1aa' }}>
+            Don't have an account?{' '}
+            <Link
+              to="/register"
+              style={{
+                color: '#fff',
+                textDecoration: 'none',
+                fontWeight: 500,
+                borderBottom: '1px solid transparent',
+                transition: 'border-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.borderBottomColor = '#fff'}
+              onMouseLeave={(e) => e.target.style.borderBottomColor = 'transparent'}
+            >
+              Sign up
+            </Link>
           </div>
-        </form>
 
-        {/* Decorative Elements */}
-        <div style={{
-          position: 'absolute',
-          top: '-50px',
-          right: '-50px',
-          width: '100px',
-          height: '100px',
-          background: 'radial-gradient(circle, rgba(167, 139, 250, 0.1), transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(40px)'
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '-50px',
-          left: '-50px',
-          width: '100px',
-          height: '100px',
-          background: 'radial-gradient(circle, rgba(249, 168, 212, 0.1), transparent 70%)',
-          borderRadius: '50%',
-          filter: 'blur(40px)'
-        }} />
+        </form>
       </div>
     </div>
   );
 }
 
-// Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0) translateX(0);
-    }
-    33% {
-      transform: translateY(-30px) translateX(20px);
-    }
-    66% {
-      transform: translateY(-10px) translateX(-20px);
-    }
-  }
-  
-  @keyframes glow {
-    0%, 100% {
-      box-shadow: 0 15px 35px rgba(167, 139, 250, 0.4);
-    }
-    50% {
-      box-shadow: 0 20px 50px rgba(167, 139, 250, 0.7);
-    }
-  }
-  
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  @keyframes shake {
-    0%, 100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-10px);
-    }
-    75% {
-      transform: translateX(10px);
-    }
-  }
-`;
-document.head.appendChild(style);
+// --- SUB COMPONENTS (Engineer Style) ---
+
+function FormInput({ label, name, type, value, onChange, placeholder, required }) {
+  return (
+    <div>
+      <label style={{
+        display: 'block',
+        marginBottom: '0.4rem',
+        color: '#a1a1aa',
+        fontWeight: 500,
+        fontSize: '13px',
+      }}>
+        {label}
+      </label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
+        style={{
+          width: '100%',
+          padding: '0.6rem 0.8rem',
+          background: '#18181b', // Input bg
+          border: '1px solid #27272a',
+          borderRadius: '6px',
+          fontSize: '14px',
+          color: 'white',
+          outline: 'none',
+          transition: 'border-color 0.2s ease',
+        }}
+        onFocus={(e) => e.target.style.borderColor = '#818cf8'} // Indigo Focus
+        onBlur={(e) => e.target.style.borderColor = '#27272a'}
+      />
+    </div>
+  );
+}
