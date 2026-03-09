@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
 import Login from './pages/Login.jsx';
@@ -14,8 +13,8 @@ import Contact from './pages/Contact.jsx';
 import MaterialFiles from "./pages/MaterialFiles.jsx";
 import Home from './pages/Home.jsx';
 import ResourcesLite from "./pages/ResourcesLite.jsx";
-import AnimatedShaderBackground from './components/AnimatedShaderBackground.jsx';
-import { GradientButton } from '@/components/ui/gradient-button';
+import { FloatingNav } from '@/components/ui/floating-navbar';
+import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, Bell, Bookmark, User, LogOut } from 'lucide-react';
 
 // New feature pages
 import Profile from './pages/Profile.jsx';
@@ -36,345 +35,116 @@ import AIQuiz from './pages/AIQuiz.jsx';
 function Navbar() {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [showFeatures, setShowFeatures] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const handleLogout = () => {
     logout();
     window.location.href = '/login';
   };
 
-  return (
-    <nav style={{
-      background: isScrolled ? 'rgba(9, 9, 11, 0.95)' : 'rgba(9, 9, 11, 0.8)',
-      backdropFilter: 'blur(16px)',
-      borderBottom: `1px solid ${isScrolled ? '#27272a' : 'transparent'}`,
-      padding: isMobile ? '0.875rem 0' : '1rem 0',
-      position: 'sticky',
-      top: 0,
-      zIndex: 50,
-      transition: 'all 0.3s ease',
-    }}>
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: isMobile ? '0 1rem' : '0 2rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-          <div style={{
-            width: isMobile ? '32px' : '36px',
-            height: isMobile ? '32px' : '36px',
-            background: '#818cf8',
-            borderRadius: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontWeight: 800,
-            fontSize: isMobile ? '13px' : '14px',
-          }}>
-            NX
-          </div>
-          <span style={{
-            color: '#ffffff',
-            fontWeight: 800,
-            fontSize: isMobile ? '18px' : '22px',
-            letterSpacing: '-0.5px'
-          }}>
-            NOTEX
-          </span>
-        </Link>
+  const navItems = [
+    { name: "Home", link: "/", icon: <HomeIcon className="w-4 h-4" /> },
+    { name: "Materials", link: "/materials", icon: <BookOpen className="w-4 h-4" /> },
+    { name: "About", link: "/about", icon: <Info className="w-4 h-4" /> },
+    { name: "Contact", link: "/contact", icon: <Mail className="w-4 h-4" /> },
+  ];
 
-        {/* Desktop Menu */}
-        {!isMobile && (
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <NavLink href="/" text="Home" />
-            <NavLink href="/materials" text="Materials" />
-            
-            {/* Features Dropdown */}
-            <div style={{ position: 'relative' }}
-              onMouseEnter={() => setShowFeatures(true)}
-              onMouseLeave={() => setShowFeatures(false)}>
-              <span style={{ color: '#a1a1aa', fontWeight: 500, fontSize: '14px', cursor: 'pointer', transition: 'color 0.2s' }}
-                onMouseEnter={e => e.target.style.color = '#fff'}
-                onMouseLeave={e => e.target.style.color = '#a1a1aa'}>
-                Features ▾
-              </span>
-              {showFeatures && (
-                <div style={{
-                  position: 'absolute', top: '100%', left: '-60px', background: 'rgba(9,9,11,0.98)',
-                  border: '1px solid #27272a', borderRadius: '8px', padding: '0.5rem 0', minWidth: '200px',
-                  zIndex: 100, boxShadow: '0 12px 40px rgba(0,0,0,0.5)'
-                }}>
-                  <DropdownLink href="/forum" text="💬 Discussion Forum" />
-                  <DropdownLink href="/chat" text="🗨️ Chat Rooms" />
-                  <DropdownLink href="/videos" text="🎥 Video Lectures" />
-                  <DropdownLink href="/cgpa" text="🧮 CGPA Calculator" />
-                  <DropdownLink href="/study-planner" text="📅 Study Planner" />
-                  <DropdownLink href="/attendance" text="📊 Attendance" />
-                  <DropdownLink href="/notes-editor" text="📝 Collab Notes" />
-                  <DropdownLink href="/leaderboard" text="🏆 Leaderboard" />
-                  <DropdownLink href="/calendar" text="📆 Calendar" />
-                  <DropdownLink href="/ai-summarizer" text="✨ AI Summarizer" />
-                  <DropdownLink href="/ai-quiz" text="🧠 AI Quiz" />
-                </div>
-              )}
-            </div>
+  const featureItems = [
+    { name: "Discussion Forum", link: "/forum", icon: <MessageSquare className="w-4 h-4" /> },
+    { name: "Chat Rooms", link: "/chat", icon: <MessageCircle className="w-4 h-4" /> },
+    { name: "Video Lectures", link: "/videos", icon: <Video className="w-4 h-4" /> },
+    { name: "CGPA Calculator", link: "/cgpa", icon: <Calculator className="w-4 h-4" /> },
+    { name: "Study Planner", link: "/study-planner", icon: <CalendarDays className="w-4 h-4" /> },
+    { name: "Attendance", link: "/attendance", icon: <ClipboardList className="w-4 h-4" /> },
+    { name: "Collab Notes", link: "/notes-editor", icon: <FileEdit className="w-4 h-4" /> },
+    { name: "Leaderboard", link: "/leaderboard", icon: <Trophy className="w-4 h-4" /> },
+    { name: "Calendar", link: "/calendar", icon: <CalendarCheck className="w-4 h-4" /> },
+    { name: "AI Summarizer", link: "/ai-summarizer", icon: <Sparkles className="w-4 h-4" /> },
+    { name: "AI Quiz", link: "/ai-quiz", icon: <Brain className="w-4 h-4" /> },
+  ];
 
-            <NavLink href="/about" text="About" />
-            <NavLink href="/contact" text="Contact" />
-
-            {/* Theme toggle */}
-            <button onClick={toggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px' }}>
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-
-            {user ? (
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginLeft: '1rem' }}>
-                <NavLink href="/dashboard" text="Dashboard" />
-                <NavLink href="/upload" text="Upload" />
-                {user.role === 'admin' && <NavLink href="/admin" text="Admin" />}
-
-                {/* Quick Icons */}
-                <Link to="/notifications" style={{ fontSize: '16px', textDecoration: 'none' }} title="Notifications">🔔</Link>
-                <Link to="/bookmarks" style={{ fontSize: '16px', textDecoration: 'none' }} title="Bookmarks">🔖</Link>
-
-                {/* User avatar - links to profile */}
-                <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: '0.5rem', textDecoration: 'none' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    background: '#818cf8',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontSize: '13px',
-                    fontWeight: 600
-                  }}>
-                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                  </div>
-                  <span style={{ color: '#e4e4e7', fontSize: '14px', fontWeight: 500 }}>
-                    {user.name ?? user.email}
-                  </span>
-                </Link>
-
-                <GradientButton
-                  variant="variant"
-                  onClick={handleLogout}
-                  className="px-4 py-2 min-w-0 text-sm"
-                >
-                  Logout
-                </GradientButton>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginLeft: '1rem' }}>
-                <GradientButton variant="variant" asChild className="px-5 py-2 min-w-0 text-sm">
-                  <Link to="/login">
-                    Login
-                  </Link>
-                </GradientButton>
-                <GradientButton asChild className="px-5 py-2 min-w-0 text-sm">
-                  <Link to="/register">
-                    Get Started
-                  </Link>
-                </GradientButton>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Mobile Menu Button */}
-        {isMobile && (
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem',
-              color: '#e4e4e7'
-            }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        )}
+  const logo = (
+    <Link to="/" className="flex items-center gap-2 no-underline">
+      <div className="w-8 h-8 bg-indigo-400 rounded-lg flex items-center justify-center text-white font-extrabold text-xs">
+        NX
       </div>
+      <span className="text-white font-extrabold text-lg tracking-tight">NOTEX</span>
+    </Link>
+  );
 
-      {/* Mobile Menu */}
-      {isMobile && isMobileMenuOpen && (
-        <div style={{
-          position: 'absolute',
-          top: '100%',
-          left: 0,
-          right: 0,
-          background: 'rgba(9, 9, 11, 0.98)',
-          backdropFilter: 'blur(16px)',
-          borderTop: '1px solid #27272a',
-          padding: '1.5rem 1rem',
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <MobileNavLink href="/" text="Home" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/materials" text="Materials" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/forum" text="💬 Forum" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/chat" text="🗨️ Chat" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/videos" text="🎥 Videos" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/cgpa" text="🧮 CGPA Calc" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/study-planner" text="📅 Study Planner" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/attendance" text="📊 Attendance" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/notes-editor" text="📝 Collab Notes" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/leaderboard" text="🏆 Leaderboard" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/calendar" text="📆 Calendar" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/ai-summarizer" text="✨ AI Summarizer" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/ai-quiz" text="🧠 AI Quiz" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/about" text="About" onClick={() => setIsMobileMenuOpen(false)} />
-            <MobileNavLink href="/contact" text="Contact" onClick={() => setIsMobileMenuOpen(false)} />
+  const authButtons = (
+    <div className="flex items-center gap-2">
+      <button
+        onClick={toggleTheme}
+        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]"
+      >
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </button>
+      <Link
+        to="/login"
+        className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
+      >
+        Login
+      </Link>
+      <Link
+        to="/register"
+        className="text-sm font-medium border border-white/[0.15] text-white px-4 py-1.5 rounded-full hover:bg-white/[0.08] transition-all relative"
+      >
+        <span>Get Started</span>
+        <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px" />
+      </Link>
+    </div>
+  );
 
-            {/* Theme toggle mobile */}
-            <button onClick={toggleTheme} style={{ padding: '0.75rem 1rem', background: 'none', border: 'none', color: '#e4e4e7', fontSize: '15px', fontWeight: 500, textAlign: 'left', cursor: 'pointer' }}>
-              {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
-            </button>
-
-            {user ? (
-              <>
-                <MobileNavLink href="/dashboard" text="Dashboard" onClick={() => setIsMobileMenuOpen(false)} />
-                <MobileNavLink href="/upload" text="Upload" onClick={() => setIsMobileMenuOpen(false)} />
-                <MobileNavLink href="/profile" text="👤 Profile" onClick={() => setIsMobileMenuOpen(false)} />
-                <MobileNavLink href="/bookmarks" text="🔖 Bookmarks" onClick={() => setIsMobileMenuOpen(false)} />
-                <MobileNavLink href="/notifications" text="🔔 Notifications" onClick={() => setIsMobileMenuOpen(false)} />
-                {user.role === 'admin' && (
-                  <MobileNavLink href="/admin" text="Admin" onClick={() => setIsMobileMenuOpen(false)} />
-                )}
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: '0.5rem',
-                  padding: '0.75rem 1rem', marginTop: '0.5rem',
-                  borderTop: '1px solid #27272a', paddingTop: '1rem'
-                }}>
-                  <div style={{
-                    width: '28px', height: '28px', background: '#818cf8',
-                    borderRadius: '50%', display: 'flex', alignItems: 'center',
-                    justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 600
-                  }}>
-                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                  </div>
-                  <span style={{ color: '#e4e4e7', fontSize: '14px', fontWeight: 500 }}>
-                    {user.name ?? user.email}
-                  </span>
-                </div>
-                <GradientButton
-                  variant="variant"
-                  onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
-                  className="w-full min-w-0 text-sm"
-                >
-                  Logout
-                </GradientButton>
-              </>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.75rem' }}>
-                <GradientButton variant="variant" asChild className="w-full min-w-0 text-sm text-center">
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} style={{ textDecoration: 'none' }}>
-                    Login
-                  </Link>
-                </GradientButton>
-                <GradientButton asChild className="w-full min-w-0 text-sm text-center">
-                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} style={{ textDecoration: 'none' }}>
-                    Get Started
-                  </Link>
-                </GradientButton>
-              </div>
-            )}
-          </div>
-        </div>
+  const userMenu = user ? (
+    <div className="flex items-center gap-1.5">
+      <button
+        onClick={toggleTheme}
+        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]"
+      >
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </button>
+      <Link to="/dashboard" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Dashboard">
+        <LayoutDashboard className="w-4 h-4" />
+      </Link>
+      <Link to="/upload" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Upload">
+        <UploadIcon className="w-4 h-4" />
+      </Link>
+      <Link to="/notifications" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Notifications">
+        <Bell className="w-4 h-4" />
+      </Link>
+      <Link to="/bookmarks" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Bookmarks">
+        <Bookmark className="w-4 h-4" />
+      </Link>
+      {user.role === 'admin' && (
+        <Link to="/admin" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Admin">
+          <Shield className="w-4 h-4" />
+        </Link>
       )}
-    </nav>
-  );
-}
+      <Link to="/profile" className="flex items-center gap-1.5 ml-1 text-neutral-300 hover:text-white transition-colors" title="Profile">
+        <div className="w-7 h-7 bg-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+          {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+        </div>
+      </Link>
+      <button
+        onClick={handleLogout}
+        className="text-neutral-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
+        title="Logout"
+      >
+        <LogOut className="w-4 h-4" />
+      </button>
+    </div>
+  ) : null;
 
-function NavLink({ href, text }) {
-  const [hovered, setHovered] = useState(false);
   return (
-    <Link
-      to={href}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        color: hovered ? '#ffffff' : '#a1a1aa',
-        textDecoration: 'none',
-        fontWeight: 500,
-        fontSize: '14px',
-        transition: 'color 0.2s ease',
-      }}
-    >
-      {text}
-    </Link>
-  );
-}
-
-function MobileNavLink({ href, text, onClick }) {
-  return (
-    <Link
-      to={href}
-      onClick={onClick}
-      style={{
-        color: '#e4e4e7',
-        textDecoration: 'none',
-        fontWeight: 500,
-        fontSize: '15px',
-        padding: '0.75rem 1rem',
-        borderRadius: '6px',
-        display: 'block',
-        transition: 'background 0.2s ease',
-      }}
-    >
-      {text}
-    </Link>
-  );
-}
-
-function DropdownLink({ href, text }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <Link to={href}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: 'block', padding: '0.5rem 1rem', color: hovered ? '#fff' : '#a1a1aa',
-        background: hovered ? 'rgba(129,140,248,0.1)' : 'transparent',
-        textDecoration: 'none', fontSize: '13px', fontWeight: 500, transition: 'all 0.15s'
-      }}>
-      {text}
-    </Link>
+    <FloatingNav
+      navItems={navItems}
+      featureItems={featureItems}
+      logo={logo}
+      authButtons={authButtons}
+      userMenu={userMenu}
+    />
   );
 }
 
@@ -383,8 +153,6 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
-          {/* Fixed shader background behind everything */}
-          <AnimatedShaderBackground />
           <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
             <Navbar />
             <Routes>
