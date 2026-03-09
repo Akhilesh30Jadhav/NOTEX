@@ -38,3 +38,8 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Misc
+Student_Portal_Backend/
+server/test-api.mjs
+SERVER.txt

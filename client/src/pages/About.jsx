@@ -1,5 +1,7 @@
 // src/pages/About.jsx
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 
 export default function About() {
   const [isMobile, setIsMobile] = useState(false);
@@ -11,22 +13,17 @@ export default function About() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Theme Constants
-  const accentColor = '#818cf8'; // Soft Indigo
+  const accentColor = '#818cf8';
   const borderColor = '#27272a';
   const bgColor = '#09090b';
 
   return (
     <div style={{
       minHeight: '100vh',
-      background: bgColor,
       color: '#fff',
       overflow: 'hidden',
-      // Engineer's Grid Background
-      backgroundImage: 'linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
     }}>
-      
+
       {/* Hero Section */}
       <section style={{
         padding: isMobile ? '4rem 1.5rem' : '6rem 2rem',
@@ -35,7 +32,6 @@ export default function About() {
         borderBottom: `1px solid ${borderColor}`
       }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
-          {/* Badge */}
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -47,9 +43,9 @@ export default function About() {
             marginBottom: '2rem',
           }}>
             <span style={{ fontSize: '12px' }}>🎓</span>
-            <span style={{ 
-              color: '#a1a1aa', 
-              fontWeight: 600, 
+            <span style={{
+              color: '#a1a1aa',
+              fontWeight: 600,
               fontSize: '12px',
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
@@ -80,12 +76,12 @@ export default function About() {
             margin: '0 auto',
             lineHeight: 1.6,
           }}>
-            Born from the frustration of a first-year CSE-AIML student who couldn't find previous year questions or proper notes. This platform bridges the gap between students and the academic resources they desperately need.
+            I personally couldn't find previous year questions or proper notes. This platform bridges the gap between students and the academic resources they desperately need.
           </p>
         </div>
       </section>
 
-      {/* Problem & Solution - Side by Side Cards */}
+      {/* Problem & Solution */}
       <section style={{ padding: isMobile ? '3rem 1.5rem' : '5rem 2rem', borderBottom: `1px solid ${borderColor}` }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{
@@ -102,18 +98,18 @@ export default function About() {
                 "New subjects felt overwhelming without proper guidance",
                 "College didn't provide centralized resource repository",
               ]}
-              accent="#ef4444" // Red for problem
+              accent="#ef4444"
             />
             <ProblemCard
-              icon="✅" // Changed to Checkmark
+              icon="✅"
               title="My Solution"
               points={[
                 "Built a comprehensive resource sharing platform",
                 "Organized materials by branch, year, and semester",
                 "Created a system for students to help each other",
-                "Designed with D Y Patil University structure in mind",
+                "Designed with R.A.I.T structure in mind",
               ]}
-              accent="#10b981" // Green for solution
+              accent="#10b981"
             />
           </div>
         </div>
@@ -127,7 +123,7 @@ export default function About() {
               My Journey
             </h2>
             <p style={{ color: '#a1a1aa', fontSize: '1.125rem' }}>
-              From a frustrated first-year to building a campus-wide solution.
+              From struggling student to building a solution for all.
             </p>
           </div>
 
@@ -136,10 +132,10 @@ export default function About() {
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
             gap: '1.5rem'
           }}>
-            <JourneyStep step="01" title="The Struggle" description="First year CSE-AIML. Faced challenges finding study materials for exams." />
-            <JourneyStep step="02" title="The Idea" description="Realized all first-year students were struggling with the same resource shortage." />
-            <JourneyStep step="03" title="The Build" description="Used React & Node.js to build this platform from scratch over 3 months." />
-            <JourneyStep step="04" title="The Future" description="Hoping this becomes the official resource hub for D Y Patil University." />
+            <JourneyStep step="01" title="The Struggle" description="First year CSE-AIML. Faced challenges finding study materials for exams." accentColor={accentColor} />
+            <JourneyStep step="02" title="The Idea" description="Realized all first-year students were struggling with the same resource shortage." accentColor={accentColor} />
+            <JourneyStep step="03" title="The Build" description="Used React & Node.js to build this platform from scratch with the help of various AI tools over 3 months." accentColor={accentColor} />
+            <JourneyStep step="04" title="The Future" description="Hoping this becomes the official resource hub for D Y Patil University." accentColor={accentColor} />
           </div>
         </div>
       </section>
@@ -171,7 +167,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Tech Stack & Resume Project */}
+      {/* Tech Stack */}
       <section style={{ padding: isMobile ? '3rem 1.5rem' : '5rem 2rem', borderBottom: `1px solid ${borderColor}` }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{
@@ -180,15 +176,14 @@ export default function About() {
             gap: '4rem',
             alignItems: 'start'
           }}>
-            {/* Text Content */}
             <div>
               <h2 style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '1rem' }}>
-                Built with Modern Tech
+                Built with Various Libraries & Frameworks
               </h2>
               <p style={{ color: '#a1a1aa', fontSize: '1.125rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-                As a 2nd-year student, I applied everything I've learned to build this full-stack application. This project demonstrates my technical skills and problem-solving ability.
+                As a 2nd-year student, I applied everything I've learned with the Help of AI to build this full-stack application.
               </p>
-              
+
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
                 <TechBadge tech="React.js" />
                 <TechBadge tech="Node.js" />
@@ -199,25 +194,37 @@ export default function About() {
               </div>
             </div>
 
-            {/* Stats Card */}
             <div style={{
-              background: '#09090b',
-              border: `1px solid ${borderColor}`,
+              position: 'relative',
+              background: 'rgba(9, 9, 11, 0.75)',
+              border: `1px solid rgba(39, 39, 42, 0.6)`,
               borderRadius: '8px',
               padding: '2rem',
+              backdropFilter: 'blur(8px)',
             }}>
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                 <div style={{ fontSize: '2rem' }}>💼</div>
-                 <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>Resume-Worthy Project</h3>
+                <div style={{
+                  width: '40px', height: '40px', background: '#18181b', borderRadius: '8px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem',
+                  border: `1px solid ${borderColor}`
+                }}>
+                  💼
+                </div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>Resume-Worthy Project</h3>
               </div>
-              
-              <p style={{ color: '#a1a1aa', lineHeight: 1.6, marginBottom: '2rem', fontSize: '0.938rem' }}>
-                Showcases full-stack development skills, user-centered design thinking, and the ability to solve real-world problems.
+
+              <p style={{ color: '#a1a1aa', lineHeight: 1.6, marginBottom: '1.5rem', fontSize: '0.938rem' }}>
+                This is a great addition to my resume as I pursue internships and future opportunities.
               </p>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <StatBox value="500+" label="Lines of Code" />
-                <StatBox value="15+" label="Features Built" />
+
+              <div style={{
+                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem'
+              }}>
+                <StatBox value="Full-Stack" label="Architecture" />
+                <StatBox value="MERN" label="Tech Stack" />
+                <StatBox value="REST" label="API Design" />
+                <StatBox value="JWT" label="Auth System" />
               </div>
             </div>
           </div>
@@ -227,18 +234,19 @@ export default function About() {
       {/* Quote Section */}
       <section style={{ padding: isMobile ? '3rem 1.5rem' : '5rem 2rem', textAlign: 'center', borderBottom: `1px solid ${borderColor}` }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👨‍💻</div>
-          <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: '1.5rem' }}>
-            From Student Problem to Technical Solution
-          </h3>
+          <div style={{
+            fontSize: '3rem', marginBottom: '1.5rem', color: '#27272a'
+          }}>
+            "
+          </div>
           <p style={{
-            fontSize: isMobile ? '1.1rem' : '1.25rem',
+            fontSize: isMobile ? '1.25rem' : '1.5rem',
             marginBottom: '2rem',
-            color: '#a1a1aa',
+            color: '#e4e4e7',
             lineHeight: 1.6,
             fontStyle: 'italic'
           }}>
-            "What started as a personal frustration during my first year has evolved into a comprehensive platform. This project represents not just my technical growth, but my commitment to solving real problems through code."
+            When I couldn't find the resources I needed, I decided to build a place where no student would have to struggle like I did. This platform is my way of giving back.
           </p>
           <div style={{
             color: accentColor,
@@ -247,7 +255,7 @@ export default function About() {
             letterSpacing: '0.05em',
             textTransform: 'uppercase'
           }}>
-            - Akhilesh Jadhav, 2nd Year CSE-AIML
+            — Akhilesh Jadhav, 2nd Year CSE-AIML
           </div>
         </div>
       </section>
@@ -261,8 +269,8 @@ export default function About() {
           <p style={{ color: '#a1a1aa', fontSize: '1.125rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>
             Help me build the resource hub that D Y Patil University students deserve. Upload your notes and share previous year papers.
           </p>
-          <button
-            onClick={() => window.location.href = '/register'}
+          <Link
+            to="/register"
             style={{
               padding: '1rem 2rem',
               background: '#fff',
@@ -275,31 +283,53 @@ export default function About() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
+              textDecoration: 'none',
               transition: 'transform 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
-            onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
           >
-            <span>🚀</span>
             Start Contributing
-          </button>
+          </Link>
         </div>
       </section>
 
+      {/* Footer */}
+      <footer style={{
+        padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+        borderTop: `1px solid rgba(39, 39, 42, 0.6)`,
+        background: 'rgba(9, 9, 11, 0.9)',
+      }}>
+        <div style={{
+          maxWidth: '1200px', margin: '0 auto',
+          display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', flexWrap: 'wrap', gap: '1rem'
+        }}>
+          <span style={{ color: '#71717a', fontSize: '14px' }}>
+            NOTEX &middot; Built for D Y Patil University students
+          </span>
+          <div style={{ display: 'flex', gap: '1.5rem' }}>
+            <Link to="/" style={{ color: '#71717a', fontSize: '13px', textDecoration: 'none' }}>Home</Link>
+            <Link to="/contact" style={{ color: '#71717a', fontSize: '13px', textDecoration: 'none' }}>Contact</Link>
+            <Link to="/materials" style={{ color: '#71717a', fontSize: '13px', textDecoration: 'none' }}>Materials</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
 
-// --- SUB COMPONENTS (Engineer Style) ---
+// --- SUB COMPONENTS ---
 
 function ProblemCard({ icon, title, points, accent }) {
   return (
     <div style={{
-      background: '#09090b',
-      border: '1px solid #27272a',
+      position: 'relative',
+      background: 'rgba(9, 9, 11, 0.75)',
+      border: '1px solid rgba(39, 39, 42, 0.6)',
       borderRadius: '8px',
       padding: '2rem',
+      backdropFilter: 'blur(8px)',
     }}>
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
         <div style={{ fontSize: '1.5rem' }}>{icon}</div>
         <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>{title}</h3>
@@ -324,21 +354,25 @@ function ProblemCard({ icon, title, points, accent }) {
   );
 }
 
-function JourneyStep({ step, title, description }) {
+function JourneyStep({ step, title, description, accentColor }) {
   return (
     <div style={{
-      background: '#09090b',
-      border: '1px solid #27272a',
+      position: 'relative',
+      background: 'rgba(9, 9, 11, 0.75)',
+      border: '1px solid rgba(39, 39, 42, 0.6)',
       borderRadius: '8px',
       padding: '1.5rem',
-      height: '100%'
+      height: '100%',
+      backdropFilter: 'blur(8px)',
     }}>
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
       <div style={{
-        fontSize: '3rem',
+        fontSize: '2.5rem',
         fontWeight: 900,
-        color: '#18181b', // Very subtle dark grey text for the number
-        marginBottom: '0.5rem',
-        lineHeight: 1
+        color: accentColor,
+        marginBottom: '0.75rem',
+        lineHeight: 1,
+        opacity: 0.4
       }}>
         {step}
       </div>
@@ -355,11 +389,14 @@ function JourneyStep({ step, title, description }) {
 function ImpactCard({ icon, title, description }) {
   return (
     <div style={{
-      background: '#09090b',
-      border: '1px solid #27272a',
+      position: 'relative',
+      background: 'rgba(9, 9, 11, 0.75)',
+      border: '1px solid rgba(39, 39, 42, 0.6)',
       borderRadius: '8px',
       padding: '2rem',
+      backdropFilter: 'blur(8px)',
     }}>
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
       <div style={{
         width: '48px',
         height: '48px',
@@ -405,12 +442,12 @@ function StatBox({ value, label }) {
     <div style={{
       background: '#18181b',
       borderRadius: '6px',
-      padding: '1rem',
+      padding: '0.875rem',
       textAlign: 'center',
       border: '1px solid #27272a'
     }}>
-      <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginBottom: '0.25rem' }}>{value}</div>
-      <div style={{ fontSize: '12px', color: '#a1a1aa', textTransform: 'uppercase' }}>{label}</div>
+      <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', marginBottom: '0.25rem' }}>{value}</div>
+      <div style={{ fontSize: '11px', color: '#a1a1aa', textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</div>
     </div>
   );
 }

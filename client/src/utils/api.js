@@ -105,6 +105,42 @@ async request(endpoint, options = {}) {
       method: 'DELETE',
     });
   }
+
+  // Convenience methods matching axios-style API
+  async get(endpoint, options = {}) {
+    const { params, ...rest } = options;
+    let url = endpoint;
+    if (params) {
+      const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString();
+      if (qs) url = `${endpoint}?${qs}`;
+    }
+    const data = await this.request(url, { method: 'GET', ...rest });
+    return { data };
+  }
+
+  async post(endpoint, body, options = {}) {
+    const isFormData = body instanceof FormData;
+    const config = { method: 'POST', ...options };
+    if (isFormData) {
+      config.body = body;
+      config.headers = { ...(options.headers || {}) };
+      delete config.headers['Content-Type'];
+    } else {
+      config.body = JSON.stringify(body);
+    }
+    const data = await this.request(endpoint, config);
+    return { data };
+  }
+
+  async put(endpoint, body, options = {}) {
+    const data = await this.request(endpoint, { method: 'PUT', body: JSON.stringify(body), ...options });
+    return { data };
+  }
+
+  async delete(endpoint, options = {}) {
+    const data = await this.request(endpoint, { method: 'DELETE', ...options });
+    return { data };
+  }
 }
 
 export default new ApiClient();

@@ -7,7 +7,12 @@ const userSchema = new mongoose.Schema({
   password:{ type: String, required: true },
   department:String,
   year:Number,
-  role:{ type: String, enum:['user','admin'], default:'user' }
+  role:{ type: String, enum:['user','admin'], default:'user' },
+  bio: { type: String, maxlength: 300, default: '' },
+  avatar: { type: String, default: '' },
+  points: { type: Number, default: 0 },
+  badges: [{ name: String, icon: String, earnedAt: { type: Date, default: Date.now } }],
+  bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Material' }]
 }, { timestamps:true });
 
 userSchema.pre('save', async function(next) {

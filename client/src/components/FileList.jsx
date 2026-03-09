@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { GradientButton } from '@/components/ui/gradient-button';
 
 export default function FileList({ files = [], color = "#1e293b" }) {
   const [open, setOpen] = useState(false);
@@ -6,21 +7,13 @@ export default function FileList({ files = [], color = "#1e293b" }) {
 
   return (
     <div style={{ marginTop: "0.75rem" }}>
-      <button
+      <GradientButton
         onClick={() => setOpen(o => !o)}
-        style={{
-          padding: "6px 10px",
-          background: "#fff",
-          color,
-          border: `2px solid ${color}`,
-          borderRadius: 8,
-          fontSize: 12,
-          fontWeight: 700,
-          cursor: "pointer",
-        }}
+        variant="variant"
+        className="px-3 py-1.5 min-w-0 text-xs"
       >
         {open ? "Hide files" : `More files (${files.length})`}
-      </button>
+      </GradientButton>
 
       {open && (
         <div

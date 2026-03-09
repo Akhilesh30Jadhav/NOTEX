@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { AuthProvider } from './context/AuthContext.jsx';
+import { AuthProvider, useAuth } from './context/AuthContext.jsx';
+import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -12,163 +13,212 @@ import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
 import MaterialFiles from "./pages/MaterialFiles.jsx";
 import Home from './pages/Home.jsx';
+import ResourcesLite from "./pages/ResourcesLite.jsx";
+import AnimatedShaderBackground from './components/AnimatedShaderBackground.jsx';
+import { GradientButton } from '@/components/ui/gradient-button';
 
-import ResourcesLite from "./pages/ResourcesLite.jsx"; 
-
+// New feature pages
+import Profile from './pages/Profile.jsx';
+import StudyPlanner from './pages/StudyPlanner.jsx';
+import Forum from './pages/Forum.jsx';
+import Chat from './pages/Chat.jsx';
+import AttendanceTracker from './pages/AttendanceTracker.jsx';
+import CGPACalculator from './pages/CGPACalculator.jsx';
+import VideoLectures from './pages/VideoLectures.jsx';
+import CollaborativeNotes from './pages/CollaborativeNotes.jsx';
+import Leaderboard from './pages/Leaderboard.jsx';
+import Bookmarks from './pages/Bookmarks.jsx';
+import Notifications from './pages/Notifications.jsx';
+import Calendar from './pages/Calendar.jsx';
+import AISummarizer from './pages/AISummarizer.jsx';
+import AIQuiz from './pages/AIQuiz.jsx';
 
 function Navbar() {
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showFeatures, setShowFeatures] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(false);
-      }
+      if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
     };
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-    handleResize(); 
-    
+    handleResize();
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/login';
+  };
+
   return (
     <nav style={{
-      background: isScrolled 
-        ? 'rgba(255, 255, 255, 0.98)' 
-        : 'rgba(255, 255, 255, 0.9)',
+      background: isScrolled ? 'rgba(9, 9, 11, 0.95)' : 'rgba(9, 9, 11, 0.8)',
       backdropFilter: 'blur(16px)',
-      borderBottom: `1px solid ${isScrolled ? 'rgba(15, 23, 42, 0.1)' : 'rgba(255, 255, 255, 0.2)'}`,
-      padding: isMobile ? '1rem 0' : '1.25rem 0',
+      borderBottom: `1px solid ${isScrolled ? '#27272a' : 'transparent'}`,
+      padding: isMobile ? '0.875rem 0' : '1rem 0',
       position: 'sticky',
       top: 0,
       zIndex: 50,
       transition: 'all 0.3s ease',
-      boxShadow: isScrolled ? '0 4px 20px rgba(15, 23, 42, 0.1)' : 'none'
     }}>
-      <div style={{ 
-        maxWidth: '1400px', 
-        margin: '0 auto', 
-        padding: isMobile ? '0 1rem' : '0 2rem', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center' 
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: isMobile ? '0 1rem' : '0 2rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
         {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
           <div style={{
-            width: isMobile ? '32px' : '40px',
-            height: isMobile ? '32px' : '40px',
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
-            borderRadius: '12px',
+            width: isMobile ? '32px' : '36px',
+            height: isMobile ? '32px' : '36px',
+            background: '#818cf8',
+            borderRadius: '8px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: 'white',
-            fontWeight: '800',
-            fontSize: isMobile ? '14px' : '16px',
-            boxShadow: '0 8px 20px rgba(15, 23, 42, 0.4)'
+            fontWeight: 800,
+            fontSize: isMobile ? '13px' : '14px',
           }}>
             NX
           </div>
           <span style={{
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            fontWeight: '800',
-            fontSize: isMobile ? '18px' : '24px',
+            color: '#ffffff',
+            fontWeight: 800,
+            fontSize: isMobile ? '18px' : '22px',
             letterSpacing: '-0.5px'
           }}>
             NOTEX
           </span>
-        </div>
-        
+        </Link>
+
         {/* Desktop Menu */}
         {!isMobile && (
-          <div style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             <NavLink href="/" text="Home" />
             <NavLink href="/materials" text="Materials" />
+            
+            {/* Features Dropdown */}
+            <div style={{ position: 'relative' }}
+              onMouseEnter={() => setShowFeatures(true)}
+              onMouseLeave={() => setShowFeatures(false)}>
+              <span style={{ color: '#a1a1aa', fontWeight: 500, fontSize: '14px', cursor: 'pointer', transition: 'color 0.2s' }}
+                onMouseEnter={e => e.target.style.color = '#fff'}
+                onMouseLeave={e => e.target.style.color = '#a1a1aa'}>
+                Features ▾
+              </span>
+              {showFeatures && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: '-60px', background: 'rgba(9,9,11,0.98)',
+                  border: '1px solid #27272a', borderRadius: '8px', padding: '0.5rem 0', minWidth: '200px',
+                  zIndex: 100, boxShadow: '0 12px 40px rgba(0,0,0,0.5)'
+                }}>
+                  <DropdownLink href="/forum" text="💬 Discussion Forum" />
+                  <DropdownLink href="/chat" text="🗨️ Chat Rooms" />
+                  <DropdownLink href="/videos" text="🎥 Video Lectures" />
+                  <DropdownLink href="/cgpa" text="🧮 CGPA Calculator" />
+                  <DropdownLink href="/study-planner" text="📅 Study Planner" />
+                  <DropdownLink href="/attendance" text="📊 Attendance" />
+                  <DropdownLink href="/notes-editor" text="📝 Collab Notes" />
+                  <DropdownLink href="/leaderboard" text="🏆 Leaderboard" />
+                  <DropdownLink href="/calendar" text="📆 Calendar" />
+                  <DropdownLink href="/ai-summarizer" text="✨ AI Summarizer" />
+                  <DropdownLink href="/ai-quiz" text="🧠 AI Quiz" />
+                </div>
+              )}
+            </div>
+
             <NavLink href="/about" text="About" />
             <NavLink href="/contact" text="Contact" />
-            
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <button style={{
-                padding: '0.75rem 1.5rem',
-                background: 'transparent',
-                color: '#1e293b',
-                border: '2px solid #1e293b',
-                borderRadius: '12px',
-                fontWeight: '600',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = '#1e293b';
-                e.target.style.color = 'white';
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 8px 25px rgba(30, 41, 59, 0.3)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = 'transparent';
-                e.target.style.color = '#1e293b';
-                e.target.style.transform = 'translateY(0px)';
-                e.target.style.boxShadow = 'none';
-              }}
-              onClick={() => window.location.href = '/login'}>
-                Login
-              </button>
-              
-              <button style={{
-                padding: '0.75rem 2rem',
-                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: '600',
-                fontSize: '14px',
-                cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(15, 23, 42, 0.4)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.transform = 'translateY(-3px)';
-                e.target.style.boxShadow = '0 12px 35px rgba(15, 23, 42, 0.6)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.transform = 'translateY(0px)';
-                e.target.style.boxShadow = '0 8px 25px rgba(15, 23, 42, 0.4)';
-              }}
-              onClick={() => window.location.href = '/register'}>
-                Get Started
-                <span style={{ marginLeft: '8px', fontSize: '16px' }}>✨</span>
-              </button>
-            </div>
+
+            {/* Theme toggle */}
+            <button onClick={toggleTheme} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px' }}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+
+            {user ? (
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginLeft: '1rem' }}>
+                <NavLink href="/dashboard" text="Dashboard" />
+                <NavLink href="/upload" text="Upload" />
+                {user.role === 'admin' && <NavLink href="/admin" text="Admin" />}
+
+                {/* Quick Icons */}
+                <Link to="/notifications" style={{ fontSize: '16px', textDecoration: 'none' }} title="Notifications">🔔</Link>
+                <Link to="/bookmarks" style={{ fontSize: '16px', textDecoration: 'none' }} title="Bookmarks">🔖</Link>
+
+                {/* User avatar - links to profile */}
+                <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: '0.5rem', textDecoration: 'none' }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    background: '#818cf8',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontSize: '13px',
+                    fontWeight: 600
+                  }}>
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <span style={{ color: '#e4e4e7', fontSize: '14px', fontWeight: 500 }}>
+                    {user.name ?? user.email}
+                  </span>
+                </Link>
+
+                <GradientButton
+                  variant="variant"
+                  onClick={handleLogout}
+                  className="px-4 py-2 min-w-0 text-sm"
+                >
+                  Logout
+                </GradientButton>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginLeft: '1rem' }}>
+                <GradientButton variant="variant" asChild className="px-5 py-2 min-w-0 text-sm">
+                  <Link to="/login">
+                    Login
+                  </Link>
+                </GradientButton>
+                <GradientButton asChild className="px-5 py-2 min-w-0 text-sm">
+                  <Link to="/register">
+                    Get Started
+                  </Link>
+                </GradientButton>
+              </div>
+            )}
           </div>
         )}
 
         {/* Mobile Menu Button */}
         {isMobile && (
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             style={{
               background: 'none',
               border: 'none',
               cursor: 'pointer',
               padding: '0.5rem',
-              color: '#1e293b'
+              color: '#e4e4e7'
             }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -189,55 +239,81 @@ function Navbar() {
           top: '100%',
           left: 0,
           right: 0,
-          background: 'rgba(255, 255, 255, 0.98)',
+          background: 'rgba(9, 9, 11, 0.98)',
           backdropFilter: 'blur(16px)',
-          borderTop: '1px solid rgba(15, 23, 42, 0.1)',
-          padding: '2rem 1rem',
-          animation: 'fadeInUp 0.3s ease-out'
+          borderTop: '1px solid #27272a',
+          padding: '1.5rem 1rem',
         }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <MobileNavLink href="/" text="Home" onClick={() => setIsMobileMenuOpen(false)} />
             <MobileNavLink href="/materials" text="Materials" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/forum" text="💬 Forum" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/chat" text="🗨️ Chat" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/videos" text="🎥 Videos" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/cgpa" text="🧮 CGPA Calc" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/study-planner" text="📅 Study Planner" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/attendance" text="📊 Attendance" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/notes-editor" text="📝 Collab Notes" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/leaderboard" text="🏆 Leaderboard" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/calendar" text="📆 Calendar" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/ai-summarizer" text="✨ AI Summarizer" onClick={() => setIsMobileMenuOpen(false)} />
+            <MobileNavLink href="/ai-quiz" text="🧠 AI Quiz" onClick={() => setIsMobileMenuOpen(false)} />
             <MobileNavLink href="/about" text="About" onClick={() => setIsMobileMenuOpen(false)} />
             <MobileNavLink href="/contact" text="Contact" onClick={() => setIsMobileMenuOpen(false)} />
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-              <button style={{
-                padding: '0.75rem 1.5rem',
-                background: 'transparent',
-                color: '#1e293b',
-                border: '2px solid #1e293b',
-                borderRadius: '12px',
-                fontWeight: '600',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onClick={() => {
-                window.location.href = '/login';
-                setIsMobileMenuOpen(false);
-              }}>
-                Login
-              </button>
-              
-              <button style={{
-                padding: '0.75rem 1.5rem',
-                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: '600',
-                fontSize: '14px',
-                cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(15, 23, 42, 0.4)'
-              }}
-              onClick={() => {
-                window.location.href = '/register';
-                setIsMobileMenuOpen(false);
-              }}>
-                Get Started ✨
-              </button>
-            </div>
+
+            {/* Theme toggle mobile */}
+            <button onClick={toggleTheme} style={{ padding: '0.75rem 1rem', background: 'none', border: 'none', color: '#e4e4e7', fontSize: '15px', fontWeight: 500, textAlign: 'left', cursor: 'pointer' }}>
+              {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+            </button>
+
+            {user ? (
+              <>
+                <MobileNavLink href="/dashboard" text="Dashboard" onClick={() => setIsMobileMenuOpen(false)} />
+                <MobileNavLink href="/upload" text="Upload" onClick={() => setIsMobileMenuOpen(false)} />
+                <MobileNavLink href="/profile" text="👤 Profile" onClick={() => setIsMobileMenuOpen(false)} />
+                <MobileNavLink href="/bookmarks" text="🔖 Bookmarks" onClick={() => setIsMobileMenuOpen(false)} />
+                <MobileNavLink href="/notifications" text="🔔 Notifications" onClick={() => setIsMobileMenuOpen(false)} />
+                {user.role === 'admin' && (
+                  <MobileNavLink href="/admin" text="Admin" onClick={() => setIsMobileMenuOpen(false)} />
+                )}
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.75rem 1rem', marginTop: '0.5rem',
+                  borderTop: '1px solid #27272a', paddingTop: '1rem'
+                }}>
+                  <div style={{
+                    width: '28px', height: '28px', background: '#818cf8',
+                    borderRadius: '50%', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 600
+                  }}>
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <span style={{ color: '#e4e4e7', fontSize: '14px', fontWeight: 500 }}>
+                    {user.name ?? user.email}
+                  </span>
+                </div>
+                <GradientButton
+                  variant="variant"
+                  onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
+                  className="w-full min-w-0 text-sm"
+                >
+                  Logout
+                </GradientButton>
+              </>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.75rem' }}>
+                <GradientButton variant="variant" asChild className="w-full min-w-0 text-sm text-center">
+                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} style={{ textDecoration: 'none' }}>
+                    Login
+                  </Link>
+                </GradientButton>
+                <GradientButton asChild className="w-full min-w-0 text-sm text-center">
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)} style={{ textDecoration: 'none' }}>
+                    Get Started
+                  </Link>
+                </GradientButton>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -246,608 +322,108 @@ function Navbar() {
 }
 
 function NavLink({ href, text }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <a 
-      href={href} 
-      style={{ 
-        color: '#475569', 
-        textDecoration: 'none', 
-        fontWeight: '600',
-        fontSize: '15px',
-        transition: 'all 0.3s ease',
-        position: 'relative',
-        padding: '0.5rem 1rem',
-        borderRadius: '8px'
-      }} 
-      onMouseOver={(e) => {
-        e.target.style.color = '#0f172a';
-        e.target.style.background = 'rgba(15, 23, 42, 0.05)';
-      }}
-      onMouseOut={(e) => {
-        e.target.style.color = '#475569';
-        e.target.style.background = 'transparent';
+    <Link
+      to={href}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        color: hovered ? '#ffffff' : '#a1a1aa',
+        textDecoration: 'none',
+        fontWeight: 500,
+        fontSize: '14px',
+        transition: 'color 0.2s ease',
       }}
     >
       {text}
-    </a>
+    </Link>
   );
 }
 
 function MobileNavLink({ href, text, onClick }) {
   return (
-    <a 
-      href={href}
+    <Link
+      to={href}
       onClick={onClick}
-      style={{ 
-        color: '#475569', 
-        textDecoration: 'none', 
-        fontWeight: '600',
-        fontSize: '16px',
+      style={{
+        color: '#e4e4e7',
+        textDecoration: 'none',
+        fontWeight: 500,
+        fontSize: '15px',
         padding: '0.75rem 1rem',
-        borderRadius: '8px',
-        transition: 'all 0.3s ease',
-        display: 'block'
-      }}
-      onMouseOver={(e) => {
-        e.target.style.color = '#0f172a';
-        e.target.style.background = 'rgba(15, 23, 42, 0.05)';
-      }}
-      onMouseOut={(e) => {
-        e.target.style.color = '#475569';
-        e.target.style.background = 'transparent';
+        borderRadius: '6px',
+        display: 'block',
+        transition: 'background 0.2s ease',
       }}
     >
       {text}
-    </a>
+    </Link>
   );
 }
 
-// MOBILE-RESPONSIVE HOME PAGE
-// function Home() {
-//   const [isMobile, setIsMobile] = useState(false);
-
-//   useEffect(() => {
-//     const handleResize = () => {
-//       setIsMobile(window.innerWidth < 768);
-//     };
-//     window.addEventListener('resize', handleResize);
-//     handleResize();
-//     return () => window.removeEventListener('resize', handleResize);
-//   }, []);
-
-//   return (
-//     <div>
-//       {/* MOBILE-RESPONSIVE Hero Section */}
-//       <section style={{ 
-//         padding: isMobile ? '4rem 1rem' : '8rem 2rem', 
-//         textAlign: 'center', 
-//         position: 'relative', 
-//         overflow: 'hidden',
-//         background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)'
-//       }}>
-//         {/* Floating Elements - Hidden on mobile for performance */}
-//         {!isMobile && (
-//           <>
-//             <FloatingElement top="15%" left="8%" size="100px" color="rgba(15, 23, 42, 0.08)" delay="0s" />
-//             <FloatingElement top="25%" right="12%" size="150px" color="rgba(30, 41, 59, 0.06)" delay="2s" />
-//             <FloatingElement bottom="30%" left="15%" size="80px" color="rgba(51, 65, 85, 0.08)" delay="4s" />
-//             <FloatingElement top="40%" right="25%" size="120px" color="rgba(15, 23, 42, 0.05)" delay="1s" />
-//           </>
-//         )}
-        
-//         <div style={{ 
-//           animation: 'fadeInUp 1.2s ease-out', 
-//           position: 'relative', 
-//           zIndex: 10,
-//           maxWidth: '1000px',
-//           margin: '0 auto'
-//         }}>
-//           <div style={{
-//             display: 'inline-block',
-//             padding: isMobile ? '0.5rem 1rem' : '0.75rem 1.5rem',
-//             background: 'rgba(15, 23, 42, 0.05)',
-//             borderRadius: '50px',
-//             marginBottom: isMobile ? '1.5rem' : '2rem',
-//             border: '1px solid rgba(15, 23, 42, 0.1)'
-//           }}>
-//             <span style={{ 
-//               color: '#1e293b', 
-//               fontWeight: '600', 
-//               fontSize: isMobile ? '12px' : '14px',
-//               display: 'flex',
-//               alignItems: 'center',
-//               gap: '0.5rem'
-//             }}>
-//               <span>🎓</span>
-//               Created Specially for R.A.I.T Students
-//             </span>
-//           </div>
-          
-//           <h1 style={{
-//             fontSize: isMobile ? '2.5rem' : '5.5rem',
-//             fontWeight: '900',
-//             marginBottom: isMobile ? '1.5rem' : '2rem',
-//             background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #475569 100%)',
-//             WebkitBackgroundClip: 'text',
-//             backgroundClip: 'text',
-//             WebkitTextFillColor: 'transparent',
-//             lineHeight: '1.1',
-//             letterSpacing: isMobile ? '-1px' : '-2px'
-//           }}>
-//             Your Academic
-//             <br />
-//             <span style={{
-//               background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)',
-//               WebkitBackgroundClip: 'text',
-//               backgroundClip: 'text',
-//               WebkitTextFillColor: 'transparent',
-//             }}>
-//               Success Hub
-//             </span>
-//           </h1>
-          
-//           <p style={{ 
-//             fontSize: isMobile ? '1.1rem' : '1.4rem', 
-//             color: '#64748b', 
-//             marginBottom: isMobile ? '2rem' : '3rem', 
-//             maxWidth: isMobile ? '100%' : '700px', 
-//             margin: `0 auto ${isMobile ? '2rem' : '3rem'}`,
-//             lineHeight: '1.7',
-//             fontWeight: '400',
-//             padding: isMobile ? '0 1rem' : '0'
-//           }}>
-//             Transform your learning experience with our intelligent platform. Downlaod resources,high quality notes and accelerate your academic journey.
-//           </p>
-          
-//           <div style={{ 
-//             display: 'flex', 
-//             gap: isMobile ? '1rem' : '1.5rem', 
-//             justifyContent: 'center', 
-//             flexWrap: 'wrap', 
-//             marginBottom: isMobile ? '3rem' : '4rem',
-//             flexDirection: isMobile ? 'column' : 'row',
-//             alignItems: 'center'
-//           }}>
-//             <PrimaryButton text="Start Learning Free" icon="🚀" isMobile={isMobile} />
-            
-//           </div>
-
-//           {/* Stats - Mobile Responsive Grid */}
-//           <div style={{
-//             display: 'grid',
-//             gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(200px, 1fr))',
-//             gap: isMobile ? '1rem' : '2rem',
-//             maxWidth: '800px',
-//             margin: '0 auto'
-//           }}>
-//             <StatCard number="Deploying Soon" label="Study Materials" isMobile={isMobile} />
-//             <StatCard number="____" label="Active Students" isMobile={isMobile} />
-//             <StatCard number="____" label="Success Rate" isMobile={isMobile} />
-            
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* MOBILE-RESPONSIVE Features Section */}
-//       <section style={{ 
-//         padding: isMobile ? '4rem 1rem' : '8rem 2rem', 
-//         background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
-//       }}>
-//         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-//           <div style={{ textAlign: 'center', marginBottom: isMobile ? '3rem' : '5rem' }}>
-//             <div style={{
-//               display: 'inline-block',
-//               padding: '0.5rem 1.25rem',
-//               background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1))',
-//               borderRadius: '50px',
-//               marginBottom: '1.5rem',
-//               border: '1px solid rgba(59, 130, 246, 0.2)'
-//             }}>
-//               <span style={{ color: '#3b82f6', fontWeight: '600', fontSize: '14px' }}>✨ FEATURES</span>
-//             </div>
-            
-//             <h2 style={{
-//               fontSize: isMobile ? '2rem' : '3.5rem',
-//               fontWeight: '800',
-//               marginBottom: '1.5rem',
-//               background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-//               WebkitBackgroundClip: 'text',
-//               backgroundClip: 'text',
-//               WebkitTextFillColor: 'transparent',
-//               letterSpacing: '-1px'
-//             }}>
-//               Everything You Need
-//               <br />
-//               <span style={{
-//                 background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-//                 WebkitBackgroundClip: 'text',
-//                 backgroundClip: 'text',
-//                 WebkitTextFillColor: 'transparent',
-//               }}>
-//                 To Excel
-//               </span>
-//             </h2>
-//             <p style={{ 
-//               fontSize: isMobile ? '1rem' : '1.2rem', 
-//               color: '#64748b', 
-//               maxWidth: '600px', 
-//               margin: '0 auto',
-//               padding: isMobile ? '0 1rem' : '0'
-//             }}>
-//               Powerful tools designed to enhance your learning experience and boost your academic performance.
-//             </p>
-//           </div>
-
-//           <div style={{ 
-//             display: 'grid', 
-//             gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(380px, 1fr))', 
-//             gap: isMobile ? '1.5rem' : '2.5rem' 
-//           }}>
-//             <PremiumFeatureCard 
-//               icon="🎯"
-//               title="Quality Resources at Your Fingertips"
-//               description="Sorted pdfs, notes, and study materials curated by top students and educators."
-//               gradient="linear-gradient(135deg, #3b82f6, #1d4ed8)"
-//               features={[""]}
-//               isMobile={isMobile}
-//             />
-//             <PremiumFeatureCard 
-//               icon="🔍"
-//               title="Advanced Search Engine"
-//               description="Find exactly what you need with our intelligent search that understands context and academic relevance."
-//               gradient="linear-gradient(135deg, #8b5cf6, #7c3aed)"
-//               features={["Semantic search", "Filter by subject", "Instant results"]}
-//               isMobile={isMobile}
-//             />
-           
-          
-//             <PremiumFeatureCard 
-//               icon="🛡️"
-//               title="Secure & Private"
-//               description="Your data is protected . Focus on learning, we'll handle the rest."
-//               gradient="linear-gradient(135deg, #ef4444, #dc2626)"
-//               features={["End-to-end encryption", "Privacy controls", "Secure backup"]}
-//               isMobile={isMobile}
-//             />
-            
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* MOBILE-RESPONSIVE CTA Section */}
-//       <section style={{ 
-//         padding: isMobile ? '4rem 1rem' : '8rem 2rem', 
-//         position: 'relative', 
-//         overflow: 'hidden' 
-//       }}>
-//         <div style={{
-//           position: 'absolute',
-//           inset: 0,
-//           background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
-//         }}></div>
-        
-//         <div style={{ maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
-//           <div style={{
-//             background: 'rgba(255, 255, 255, 0.1)',
-//             backdropFilter: 'blur(20px)',
-//             border: '1px solid rgba(255, 255, 255, 0.2)',
-//             padding: isMobile ? '3rem 2rem' : '4rem 3rem',
-//             borderRadius: '24px',
-//             textAlign: 'center',
-//             boxShadow: '0 25px 50px rgba(0, 0, 0, 0.2)'
-//           }}>
-//             <h2 style={{ 
-//               fontSize: isMobile ? '2rem' : '3rem', 
-//               fontWeight: '800', 
-//               marginBottom: '1.5rem',
-//               color: 'white',
-//               letterSpacing: '-1px'
-//             }}>
-//               Ready to Transform Your Learning?
-//             </h2>
-//             <p style={{ 
-//               fontSize: isMobile ? '1rem' : '1.25rem', 
-//               marginBottom: '3rem', 
-//               color: 'rgba(255, 255, 255, 0.8)',
-//               maxWidth: '600px',
-//               margin: '0 auto 3rem'
-//             }}>
-//               Join and contribute in our website to maken this platform better for everyone. Let's achieve academic excellence together!
-//             </p>
-            
-//             <div style={{ 
-//               display: 'flex', 
-//               gap: isMobile ? '1rem' : '1.5rem', 
-//               justifyContent: 'center', 
-//               flexWrap: 'wrap',
-//               flexDirection: isMobile ? 'column' : 'row',
-//               alignItems: 'center'
-//             }}>
-//               <button style={{
-//                 padding: isMobile ? '1rem 2rem' : '1.25rem 3rem',
-//                 background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-//                 color: 'white',
-//                 border: 'none',
-//                 borderRadius: '16px',
-//                 fontWeight: '700',
-//                 fontSize: isMobile ? '16px' : '18px',
-//                 cursor: 'pointer',
-//                 transition: 'all 0.3s ease',
-//                 boxShadow: '0 12px 30px rgba(59, 130, 246, 0.4)',
-//                 width: isMobile ? '100%' : 'auto'
-//               }}
-//               onMouseOver={(e) => {
-//                 if (!isMobile) {
-//                   e.target.style.transform = 'translateY(-4px) scale(1.02)';
-//                   e.target.style.boxShadow = '0 20px 40px rgba(59, 130, 246, 0.6)';
-//                 }
-//               }}
-//               onMouseOut={(e) => {
-//                 if (!isMobile) {
-//                   e.target.style.transform = 'translateY(0px) scale(1)';
-//                   e.target.style.boxShadow = '0 12px 30px rgba(59, 130, 246, 0.4)';
-//                 }
-//               }}
-//               onClick={() => window.location.href = '/register'}>
-//                 Start 
-//                 <span style={{ marginLeft: '12px', fontSize: '20px' }}>✨</span>
-//               </button>
-              
-              
-//             </div>
-            
-//             <div style={{ 
-//               marginTop: '3rem', 
-//               display: 'flex', 
-//               justifyContent: 'center', 
-//               alignItems: 'center', 
-//               gap: isMobile ? '1rem' : '2rem',
-//               flexWrap: 'wrap',
-//               flexDirection: isMobile ? 'column' : 'row'
-//             }}>
-//               <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-//                 <span></span> 
-//               </div>
-//               <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-//                 <span></span> 
-//               </div>
-//               <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-//                 <span></span> 
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// }
-
-// // Component Definitions
-// function FloatingElement({ top, bottom, left, right, size, color, delay }) {
-//   return (
-//     <div style={{ 
-//       position: 'absolute', 
-//       top, bottom, left, right,
-//       width: size, 
-//       height: size, 
-//       background: color, 
-//       borderRadius: '50%', 
-//       animation: `float 8s ease-in-out infinite`,
-//       animationDelay: delay
-//     }}></div>
-//   );
-// }
-
-function PrimaryButton({ text, icon, isMobile }) {
+function DropdownLink({ href, text }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <button style={{
-      padding: isMobile ? '1rem 2rem' : '1.25rem 2.5rem',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      color: 'white',
-      border: 'none',
-      borderRadius: '16px',
-      fontWeight: '700',
-      fontSize: isMobile ? '16px' : '18px',
-      cursor: 'pointer',
-      boxShadow: '0 12px 30px rgba(15, 23, 42, 0.4)',
-      transition: 'all 0.4s ease',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '0.75rem',
-      width: isMobile ? '100%' : 'auto'
-    }}
-    onMouseOver={(e) => {
-      if (!isMobile) {
-        e.target.style.transform = 'translateY(-4px) scale(1.02)';
-        e.target.style.boxShadow = '0 20px 40px rgba(15, 23, 42, 0.6)';
-      }
-    }}
-    onMouseOut={(e) => {
-      if (!isMobile) {
-        e.target.style.transform = 'translateY(0px) scale(1)';
-        e.target.style.boxShadow = '0 12px 30px rgba(15, 23, 42, 0.4)';
-      }
-    }}
-    onClick={() => window.location.href = '/register'}>
-      <span>{icon}</span>
-      {text}
-    </button>
-  );
-}
-
-function SecondaryButton({ text, icon, isMobile }) {
-  return (
-    <button style={{
-      padding: isMobile ? '1rem 2rem' : '1.25rem 2.5rem',
-      background: 'rgba(255, 255, 255, 0.9)',
-      color: '#1e293b',
-      border: '2px solid #e2e8f0',
-      borderRadius: '16px',
-      fontWeight: '600',
-      fontSize: isMobile ? '16px' : '18px',
-      cursor: 'pointer',
-      transition: 'all 0.4s ease',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '0.75rem',
-      backdropFilter: 'blur(10px)',
-      width: isMobile ? '100%' : 'auto'
-    }}
-    onMouseOver={(e) => {
-      e.target.style.background = '#1e293b';
-      e.target.style.color = 'white';
-      if (!isMobile) {
-        e.target.style.transform = 'translateY(-4px)';
-      }
-      e.target.style.borderColor = '#1e293b';
-    }}
-    onMouseOut={(e) => {
-      e.target.style.background = 'rgba(255, 255, 255, 0.9)';
-      e.target.style.color = '#1e293b';
-      if (!isMobile) {
-        e.target.style.transform = 'translateY(0px)';
-      }
-      e.target.style.borderColor = '#e2e8f0';
-    }}>
-      <span>{icon}</span>
-      {text}
-    </button>
-  );
-}
-
-function StatCard({ number, label, isMobile }) {
-  return (
-    <div style={{
-      textAlign: 'center',
-      padding: isMobile ? '1rem' : '1.5rem',
-      background: 'rgba(255, 255, 255, 0.8)',
-      borderRadius: '16px',
-      border: '1px solid rgba(15, 23, 42, 0.1)',
-      backdropFilter: 'blur(10px)'
-    }}>
-      <div style={{ 
-        fontSize: isMobile ? '1.8rem' : '2.5rem', 
-        fontWeight: '800', 
-        color: '#0f172a',
-        marginBottom: '0.5rem'
-      }}>{number}</div>
-      <div style={{ 
-        fontSize: isMobile ? '12px' : '14px', 
-        color: '#64748b',
-        fontWeight: '600'
-      }}>{label}</div>
-    </div>
-  );
-}
-
-function PremiumFeatureCard({ icon, title, description, gradient, features, isMobile }) {
-  return (
-    <div style={{
-      background: 'white',
-      borderRadius: '24px',
-      padding: isMobile ? '2rem' : '2.5rem',
-      boxShadow: '0 20px 50px rgba(15, 23, 42, 0.1)',
-      border: '1px solid rgba(15, 23, 42, 0.05)',
-      transition: 'all 0.4s ease',
-      cursor: 'pointer'
-    }}
-    onMouseOver={(e) => {
-      if (!isMobile) {
-        e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
-        e.currentTarget.style.boxShadow = '0 30px 60px rgba(15, 23, 42, 0.2)';
-      }
-    }}
-    onMouseOut={(e) => {
-      if (!isMobile) {
-        e.currentTarget.style.transform = 'translateY(0px) scale(1)';
-        e.currentTarget.style.boxShadow = '0 20px 50px rgba(15, 23, 42, 0.1)';
-      }
-    }}>
-      <div style={{
-        width: isMobile ? '60px' : '80px',
-        height: isMobile ? '60px' : '80px',
-        background: gradient,
-        borderRadius: '20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: '1.5rem',
-        fontSize: isMobile ? '1.5rem' : '2rem',
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)'
+    <Link to={href}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'block', padding: '0.5rem 1rem', color: hovered ? '#fff' : '#a1a1aa',
+        background: hovered ? 'rgba(129,140,248,0.1)' : 'transparent',
+        textDecoration: 'none', fontSize: '13px', fontWeight: 500, transition: 'all 0.15s'
       }}>
-        {icon}
-      </div>
-      
-      <h3 style={{ 
-        fontSize: isMobile ? '1.25rem' : '1.5rem', 
-        fontWeight: '800', 
-        marginBottom: '1rem', 
-        color: '#0f172a',
-        letterSpacing: '-0.5px'
-      }}>{title}</h3>
-      
-      <p style={{ 
-        color: '#64748b', 
-        lineHeight: 1.7,
-        marginBottom: '1.5rem',
-        fontSize: '15px'
-      }}>{description}</p>
-      
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        {features.map((feature, index) => (
-          <li key={index} style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginBottom: '0.75rem',
-            color: '#475569',
-            fontSize: '14px',
-            fontWeight: '500'
-          }}>
-            <span style={{ color: '#10b981', fontSize: '16px' }}>✓</span>
-            {feature}
-          </li>
-        ))}
-      </ul>
-    </div>
+      {text}
+    </Link>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)'
-        }}>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/materials" element={<Materials />} />
-            <Route path="/resources" element={<ResourcesLite />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          {/* Fixed shader background behind everything */}
+          <AnimatedShaderBackground />
+          <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/materials" element={<Materials />} />
+              <Route path="/resources" element={<ResourcesLite />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/materials/:id/files" element={<MaterialFiles />} />
+              <Route path="/cgpa" element={<CGPACalculator />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/materials/:id/files" element={<MaterialFiles />} />
-            
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/upload" element={<Upload />} />
-            </Route>
-            
-            <Route element={<ProtectedRoute roles={['admin']} />}>
-              <Route path="/admin" element={<Admin />} />
-            </Route>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/upload" element={<Upload />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/study-planner" element={<StudyPlanner />} />
+                <Route path="/forum" element={<Forum />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/attendance" element={<AttendanceTracker />} />
+                <Route path="/videos" element={<VideoLectures />} />
+                <Route path="/notes-editor" element={<CollaborativeNotes />} />
+                <Route path="/bookmarks" element={<Bookmarks />} />
+                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/ai-summarizer" element={<AISummarizer />} />
+                <Route path="/ai-quiz" element={<AIQuiz />} />
+              </Route>
 
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+              <Route element={<ProtectedRoute roles={['admin']} />}>
+                <Route path="/admin" element={<Admin />} />
+              </Route>
 
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

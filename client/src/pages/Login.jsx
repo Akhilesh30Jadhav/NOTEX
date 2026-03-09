@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -42,23 +43,20 @@ export default function Login() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: bgColor,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2rem',
-      // Engineer's Grid Background
-      backgroundImage: 'linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
     }}>
 
-      {/* Login Card - Structural & Solid */}
+      {/* Login Card */}
       <div style={{
-        background: bgColor,
-        border: `1px solid ${borderColor}`,
+        background: 'rgba(9, 9, 11, 0.85)',
+        border: `1px solid rgba(39, 39, 42, 0.6)`,
         borderRadius: '8px',
         padding: '2.5rem',
         width: '100%',
+        backdropFilter: 'blur(16px)',
         maxWidth: '420px',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
       }}>
@@ -139,32 +137,14 @@ export default function Login() {
             required
           />
 
-          {/* Submit Button - Solid White */}
-          <button
+          {/* Submit Button */}
+          <GradientButton
             type="submit"
             disabled={loading}
-            style={{
-              marginTop: '0.5rem',
-              width: '100%',
-              padding: '0.75rem',
-              background: loading ? '#27272a' : '#ffffff',
-              color: loading ? '#a1a1aa' : '#000000',
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'opacity 0.2s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem'
-            }}
-            onMouseEnter={(e) => !loading && (e.target.style.opacity = '0.9')}
-            onMouseLeave={(e) => !loading && (e.target.style.opacity = '1')}
+            className="w-full mt-2"
           >
             {loading ? 'Signing in...' : 'Sign In'}
-          </button>
+          </GradientButton>
 
           {/* Register Link */}
           <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '14px', color: '#a1a1aa' }}>

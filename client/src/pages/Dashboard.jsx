@@ -1,9 +1,9 @@
 
-
 // src/pages/Dashboard.jsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -134,6 +134,7 @@ export default function Dashboard() {
         }}>
           {/* Account Details Card */}
           <div style={{
+            position: 'relative',
             background: 'rgba(255, 255, 255, 0.03)',
             backdropFilter: 'blur(20px)',
             borderRadius: '24px',
@@ -141,6 +142,7 @@ export default function Dashboard() {
             border: '1px solid rgba(255, 255, 255, 0.08)',
             boxShadow: '0 30px 60px rgba(0, 0, 0, 0.3)'
           }}>
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
             <div style={{ marginBottom: '2rem' }}>
               <h2 style={{
                 fontSize: '1.75rem',
@@ -200,6 +202,7 @@ export default function Dashboard() {
         {/* Info Banner */}
         <div style={{
           marginTop: '3rem',
+          position: 'relative',
           background: 'rgba(167, 139, 250, 0.08)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(167, 139, 250, 0.2)',
@@ -208,6 +211,7 @@ export default function Dashboard() {
           textAlign: 'center',
           animation: 'fadeInUp 1.4s ease-out'
         }}>
+          <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
           <h3 style={{
             fontSize: isMobile ? '1.5rem' : '2rem',
             fontWeight: 800,
@@ -242,6 +246,7 @@ function StatCard({ icon, title, value, description, gradient, link }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
+        position: 'relative',
         background: 'rgba(255, 255, 255, 0.03)',
         backdropFilter: 'blur(20px)',
         borderRadius: '20px',
@@ -253,6 +258,7 @@ function StatCard({ icon, title, value, description, gradient, link }) {
         boxShadow: isHovered ? '0 30px 60px rgba(0, 0, 0, 0.4)' : '0 10px 30px rgba(0, 0, 0, 0.2)'
       }}
     >
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
       <div style={{
         width: '60px',
         height: '60px',
@@ -345,6 +351,7 @@ function QuickActionCard({ icon, title, description, link, gradient }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
+        position: 'relative',
         background: 'rgba(255, 255, 255, 0.03)',
         backdropFilter: 'blur(20px)',
         borderRadius: '20px',
@@ -357,6 +364,7 @@ function QuickActionCard({ icon, title, description, link, gradient }) {
         display: 'block'
       }}
     >
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
       <div style={{
         width: '50px',
         height: '50px',

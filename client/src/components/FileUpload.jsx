@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 export default function FileUpload({ onSubmit }) {
   const [file, setFile] = useState(null);
@@ -37,7 +38,7 @@ export default function FileUpload({ onSubmit }) {
       </select>
       <input name="tags" placeholder="Tags (comma separated)" value={form.tags} onChange={handle} />
       <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" onChange={(e) => setFile(e.target.files[0])} />
-      <button type="submit">Upload</button>
+      <GradientButton type="submit">Upload</GradientButton>
     </form>
     );
 }

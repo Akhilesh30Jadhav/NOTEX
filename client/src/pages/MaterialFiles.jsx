@@ -1,6 +1,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { getMaterialById } from "../utils/materialsStore";
+import { GradientButton } from '@/components/ui/gradient-button';
 
 /* ---------- Pretty title helpers ---------- */
 const PRETTY_ACRONYMS = new Set(["DBMS","DSA","OOP","PYQ","CSE","AIML","LAB"]);
@@ -226,14 +227,15 @@ export default function MaterialFiles() {
                   </div>
 
                   <div style={styles.actions(isMobile)}>
-                    <button
+                    <GradientButton
                       onClick={() => copy(new URL(f.path, window.location.origin).toString(), f.path)}
-                      style={styles.btnGhost(isMobile)}
+                      variant="variant"
+                      className="px-3 py-1.5 min-w-0 text-xs"
                       aria-label="Copy link"
                       title="Copy link"
                     >
                       {copiedKey === f.path ? "Copied!" : "Copy link"}
-                    </button>
+                    </GradientButton>
                     <a href={f.path} target="_blank" rel="noreferrer" style={styles.btnOutline(isMobile)}>
                       View
                     </a>

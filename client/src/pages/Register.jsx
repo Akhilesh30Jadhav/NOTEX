@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', department: '', year: 1 });
@@ -38,22 +39,19 @@ export default function Register() {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: bgColor,
       color: '#fff',
       padding: '2rem',
-      // Engineer's Grid Background
-      backgroundImage: 'linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
     }}>
       
-      {/* Register Card - Structural & Solid */}
+      {/* Register Card */}
       <div style={{
-        background: bgColor,
-        border: `1px solid ${borderColor}`,
+        background: 'rgba(9, 9, 11, 0.85)',
+        border: `1px solid rgba(39, 39, 42, 0.6)`,
         borderRadius: '8px',
         padding: '2.5rem',
         width: '100%',
         maxWidth: '450px',
+        backdropFilter: 'blur(16px)',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
       }}>
         
@@ -119,7 +117,7 @@ export default function Register() {
             type="text"
             value={form.name}
             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-            placeholder="John Doe"
+            placeholder="XYZ ABC"
             required
           />
 
@@ -167,32 +165,14 @@ export default function Register() {
             />
           </div>
 
-          {/* Submit Button - Solid White */}
-          <button
+          {/* Submit Button */}
+          <GradientButton
             type="submit"
             disabled={loading}
-            style={{
-              marginTop: '0.5rem',
-              width: '100%',
-              background: loading ? '#27272a' : '#ffffff',
-              color: loading ? '#a1a1aa' : '#000000',
-              padding: '0.75rem',
-              borderRadius: '6px',
-              border: 'none',
-              fontWeight: 600,
-              fontSize: '14px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'opacity 0.2s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem'
-            }}
-            onMouseEnter={(e) => !loading && (e.target.style.opacity = '0.9')}
-            onMouseLeave={(e) => !loading && (e.target.style.opacity = '1')}
+            className="w-full mt-2"
           >
             {loading ? 'Creating account...' : 'Create account'}
-          </button>
+          </GradientButton>
 
           {/* Login Link */}
           <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '14px', color: '#a1a1aa' }}>

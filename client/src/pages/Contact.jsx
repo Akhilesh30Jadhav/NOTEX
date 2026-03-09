@@ -1,5 +1,7 @@
-// src/pages/Contact.jsx
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 export default function Contact() {
   const [isMobile, setIsMobile] = useState(false);
@@ -30,7 +32,6 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -38,7 +39,6 @@ export default function Contact() {
     }, 2000);
   };
 
-  // Theme Colors
   const accentColor = '#818cf8'; // Indigo
   const borderColor = '#27272a';
   const bgColor = '#09090b';
@@ -46,11 +46,7 @@ export default function Contact() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: bgColor,
       color: '#fff',
-      // Engineer's Grid Background
-      backgroundImage: 'linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
     }}>
 
       {/* Hero Section */}
@@ -105,7 +101,7 @@ export default function Contact() {
             margin: '0 auto',
             lineHeight: 1.6,
           }}>
-            Have questions, suggestions, or need support? Our team is here to help you succeed in your academic journey.
+            Have questions, suggestions, or need support? We'd love to hear from you.
           </p>
         </div>
       </section>
@@ -122,16 +118,19 @@ export default function Contact() {
             
             {/* Contact Form Container - Structural */}
             <div style={{
-              background: '#09090b',
-              border: `1px solid ${borderColor}`,
+              position: 'relative',
+              background: 'rgba(9, 9, 11, 0.8)',
+              border: `1px solid rgba(39, 39, 42, 0.6)`,
               borderRadius: '8px',
               padding: isMobile ? '1.5rem' : '3rem',
+              backdropFilter: 'blur(12px)',
             }}>
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
               <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '0.5rem' }}>
                 Send a Message
               </h2>
               <p style={{ color: '#a1a1aa', marginBottom: '2.5rem', fontSize: '15px' }}>
-                Fill out the form below and we'll get back to you within 24 hours.
+                Fill out the form below and we'll get back to you ASAP
               </p>
 
               {isSubmitted ? (
@@ -196,7 +195,6 @@ export default function Contact() {
                       }}
                     >
                       <option value="">Select a subject</option>
-                      <option value="general">General Inquiry</option>
                       <option value="support">Technical Support</option>
                       <option value="feedback">Feedback & Suggestions</option>
                       <option value="other">Other</option>
@@ -238,31 +236,14 @@ export default function Contact() {
                     />
                   </div>
 
-                  {/* Submit Button - Solid White Action */}
-                  <button
+                  {/* Submit Button */}
+                  <GradientButton
                     type="submit"
                     disabled={isSubmitting}
-                    style={{
-                      width: '100%',
-                      padding: '0.875rem',
-                      background: isSubmitting ? '#27272a' : '#ffffff',
-                      color: isSubmitting ? '#a1a1aa' : '#000000',
-                      border: 'none',
-                      borderRadius: '6px',
-                      fontSize: '15px',
-                      fontWeight: 600,
-                      cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                      transition: 'opacity 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.5rem'
-                    }}
-                    onMouseEnter={(e) => !isSubmitting && (e.target.style.opacity = '0.9')}
-                    onMouseLeave={(e) => !isSubmitting && (e.target.style.opacity = '1')}
+                    className="w-full"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </button>
+                  </GradientButton>
                 </form>
               )}
             </div>
@@ -275,42 +256,75 @@ export default function Contact() {
                 description="Get in touch via email"
                 info="akhilesh30jadhav@gmail.com"
               />
-              <ContactCard
-                icon="💬"
-                title="Response Time"
-                description="We typically respond within"
-                info="24 Hours"
-              />
+             
               <ContactCard
                 icon="📍"
                 title="Location"
                 description="D Y Patil University"
-                info="Pune, India"
+                info="Navi Mumbai, MH, India"
               />
               
               {/* Quick Info Box */}
               <div style={{
-                background: '#18181b',
-                border: `1px solid ${borderColor}`,
+                position: 'relative',
+                background: 'rgba(9, 9, 11, 0.75)',
+                border: '1px solid rgba(39, 39, 42, 0.6)',
                 borderRadius: '8px',
                 padding: '1.5rem',
-                marginTop: '1rem'
+                backdropFilter: 'blur(8px)',
               }}>
-                <h4 style={{ color: '#fff', marginBottom: '0.5rem', fontWeight: 600 }}>FAQ</h4>
-                <p style={{ color: '#a1a1aa', fontSize: '14px', lineHeight: 1.5 }}>
-                  Check our materials library before asking about specific notes. Most resources are already uploaded there!
-                </p>
+                <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>
+                  Quick Info
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                    <span style={{ color: '#a1a1aa' }}>Response Time</span>
+                    <span style={{ color: '#e4e4e7', fontWeight: 500 }}>Within 24 hours</span>
+                  </div>
+                  <div style={{ height: '1px', background: '#27272a' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                    <span style={{ color: '#a1a1aa' }}>Best For</span>
+                    <span style={{ color: '#e4e4e7', fontWeight: 500 }}>Bug reports, feedback</span>
+                  </div>
+                  <div style={{ height: '1px', background: '#27272a' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                    <span style={{ color: '#a1a1aa' }}>Platform</span>
+                    <span style={{ color: '#e4e4e7', fontWeight: 500 }}>NOTEX Student Portal</span>
+                  </div>
+                </div>
               </div>
             </div>
 
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer style={{
+        padding: isMobile ? '2rem 1.5rem' : '2.5rem 2rem',
+        borderTop: `1px solid rgba(39, 39, 42, 0.6)`,
+        background: 'rgba(9, 9, 11, 0.9)',
+      }}>
+        <div style={{
+          maxWidth: '1200px', margin: '0 auto',
+          display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', flexWrap: 'wrap', gap: '1rem'
+        }}>
+          <span style={{ color: '#71717a', fontSize: '14px' }}>
+            NOTEX &middot; Built for D Y Patil University students
+          </span>
+          <div style={{ display: 'flex', gap: '1.5rem' }}>
+            <Link to="/" style={{ color: '#71717a', fontSize: '13px', textDecoration: 'none' }}>Home</Link>
+            <Link to="/about" style={{ color: '#71717a', fontSize: '13px', textDecoration: 'none' }}>About</Link>
+            <Link to="/materials" style={{ color: '#71717a', fontSize: '13px', textDecoration: 'none' }}>Materials</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
 
-// --- SUB COMPONENTS (Engineer Style) ---
 
 function FormInput({ label, name, type, value, onChange, placeholder, required }) {
   return (
@@ -362,24 +376,12 @@ function SuccessMessage({ onReset, accentColor }) {
       <p style={{ color: '#a1a1aa', marginBottom: '2rem', lineHeight: 1.6 }}>
         Thank you for reaching out. We'll get back to you shortly.
       </p>
-      <button
+      <GradientButton
         onClick={onReset}
-        style={{
-          padding: '0.6rem 1.2rem',
-          background: 'transparent',
-          color: '#fff',
-          border: '1px solid #3f3f46',
-          borderRadius: '6px',
-          fontWeight: 600,
-          cursor: 'pointer',
-          fontSize: '14px',
-          transition: 'background 0.2s ease'
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#18181b'}
-        onMouseLeave={(e) => e.target.style.background = 'transparent'}
+        variant="variant"
       >
         Send Another
-      </button>
+      </GradientButton>
     </div>
   );
 }
@@ -387,14 +389,17 @@ function SuccessMessage({ onReset, accentColor }) {
 function ContactCard({ icon, title, description, info }) {
   return (
     <div style={{
-      background: '#09090b',
-      border: '1px solid #27272a',
+      position: 'relative',
+      background: 'rgba(9, 9, 11, 0.75)',
+      border: '1px solid rgba(39, 39, 42, 0.6)',
       borderRadius: '8px',
       padding: '1.5rem',
       display: 'flex',
       alignItems: 'flex-start',
-      gap: '1rem'
+      gap: '1rem',
+      backdropFilter: 'blur(8px)',
     }}>
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
       <div style={{
         width: '40px',
         height: '40px',

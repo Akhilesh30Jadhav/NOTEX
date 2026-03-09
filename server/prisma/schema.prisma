@@ -1,0 +1,268 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── ENUMS ──────────────────────────────────────────
+
+enum Role {
+  user
+  admin
+}
+
+enum NotificationType {
+  new_material
+  review
+  badge
+  system
+}
+
+enum DayOfWeek {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+enum AttendanceStatus {
+  present
+  absent
+}
+
+enum MessageType {
+  text
+  system
+}
+
+// ─── MODELS ─────────────────────────────────────────
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  department String?
+  year       Int?
+  role       Role     @default(user)
+  bio        String   @default("") @db.VarChar(300)
+  avatar     String   @default("")
+  points     Int      @default(0)
+  badges     Json     @default("[]")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  bookmarks      Bookmark[]
+  reviews        Review[]
+  notifications  Notification[]
+  studyPlans     StudyPlan[]
+  forumPosts     ForumPost[]
+  forumAnswers   ForumAnswer[]
+  chatMessages   ChatMessage[]
+  attendances    Attendance[]
+  videoLectures  VideoLecture[]
+  noteDocs       NoteDoc[]        @relation("NoteOwner")
+  collaborations NoteDoc[]        @relation("NoteCollaborators")
+  downloads      Download[]
+  forumPostUpvotes   ForumPost[]  @relation("ForumPostUpvotes")
+  forumAnswerUpvotes ForumAnswer[] @relation("ForumAnswerUpvotes")
+}
+
+model Material {
+  id          String   @id @default(uuid())
+  title       String?
+  description String?
+  subject     String?
+  department  String?
+  year        Int?
+  category    String?
+  file_url    String?
+  tags        String[] @default([])
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  bookmarks      Bookmark[]
+  reviews        Review[]
+  downloadRecords Download[]
+}
+
+model Bookmark {
+  id         String   @id @default(uuid())
+  userId     String
+  materialId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, materialId])
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  userId     String
+  materialId String
+  rating     Int
+  comment    String?  @db.VarChar(500)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, materialId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  link      String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+}
+
+model StudyPlan {
+  id          String    @id @default(uuid())
+  userId      String
+  title       String
+  subject     String?
+  description String?
+  day         DayOfWeek
+  startTime   String
+  endTime     String
+  color       String    @default("#818cf8")
+  recurring   Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, day])
+}
+
+model ForumPost {
+  id        String   @id @default(uuid())
+  authorId  String
+  subject   String
+  title     String
+  body      String
+  tags      String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author  User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  upvotes User[]        @relation("ForumPostUpvotes")
+  answers ForumAnswer[]
+
+  @@index([subject])
+}
+
+model ForumAnswer {
+  id        String   @id @default(uuid())
+  postId    String
+  authorId  String
+  body      String
+  accepted  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  post    ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author  User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  upvotes User[]    @relation("ForumAnswerUpvotes")
+}
+
+model ChatMessage {
+  id        String      @id @default(uuid())
+  room      String
+  senderId  String
+  message   String      @db.VarChar(2000)
+  type      MessageType @default(text)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([room, createdAt(sort: Desc)])
+}
+
+model Attendance {
+  id        String           @id @default(uuid())
+  userId    String
+  subject   String
+  date      DateTime
+  status    AttendanceStatus
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subject, date])
+}
+
+model VideoLecture {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  subject      String
+  department   String?
+  year         Int?
+  videoUrl     String
+  thumbnailUrl String?
+  duration     String?
+  uploadedById String?
+  views        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  uploadedBy User? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([subject])
+}
+
+model NoteDoc {
+  id            String   @id @default(uuid())
+  title         String
+  content       String   @default("")
+  ownerId       String
+  subject       String?
+  isPublic      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  owner         User     @relation("NoteOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  collaborators User[]   @relation("NoteCollaborators")
+
+  @@index([ownerId])
+}
+
+model Subject {
+  id   String @id @default(uuid())
+  name String
+}
+
+model Download {
+  id         String   @id @default(uuid())
+  userId     String?
+  materialId String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  material Material? @relation(fields: [materialId], references: [id], onDelete: SetNull)
+}
