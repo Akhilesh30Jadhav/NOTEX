@@ -1,11 +1,11 @@
-import AnoAI from '@/components/ui/animated-shader-background';
+import { Header1 } from "@/components/ui/header"
 
-const DemoOne = () => {
+function HeaderDemo() {
   return (
-    <div className="w-full h-screen bg-black">
-      <AnoAI />
+    <div className="block">
+      <Header1 />
     </div>
   );
-};
+}
 
-export { DemoOne };
+export { HeaderDemo };
