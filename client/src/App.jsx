@@ -15,7 +15,7 @@ import Home from './pages/Home.jsx';
 import ResourcesLite from "./pages/ResourcesLite.jsx";
 import { FloatingNav } from '@/components/ui/floating-navbar';
 import AnoAI from '@/components/ui/animated-shader-background';
-import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, Bell, Bookmark, User, LogOut } from 'lucide-react';
+import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, LogOut } from 'lucide-react';
 
 // New feature pages
 import Profile from './pages/Profile.jsx';
@@ -97,37 +97,36 @@ function Navbar() {
   );
 
   const userMenu = user ? (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        className="text-neutral-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/[0.08]"
+        className="text-neutral-300 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/[0.08]"
       >
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-      <Link to="/dashboard" className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/[0.08] transition-colors" title="Dashboard">
-        Dashboard
-      </Link>
-      <Link to="/upload" className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/[0.08] transition-colors" title="Upload">
-        Upload
+      <Link to="/dashboard" className="text-sm font-semibold text-neutral-300 hover:text-white px-3 py-2 rounded-xl hover:bg-white/[0.08] transition-colors" title="Dashboard">
+        <span className="hidden lg:inline">Dashboard</span>
+        <span className="lg:hidden"><LayoutDashboard className="w-4 h-4" /></span>
       </Link>
       {user.role === 'admin' && (
-        <Link to="/admin" className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/[0.08] transition-colors" title="Admin">
+        <Link to="/admin" className="text-sm font-semibold text-neutral-300 hover:text-white px-3 py-2 rounded-xl hover:bg-white/[0.08] transition-colors" title="Admin">
           Admin
         </Link>
       )}
       <Link to="/profile" className="flex items-center gap-2 pl-1 text-neutral-300 hover:text-white transition-colors" title="Profile">
-        <div className="w-8 h-8 bg-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+        <div className="w-8 h-8 bg-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold ring-2 ring-indigo-300/30">
           {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
         </div>
-        <span className="hidden lg:inline text-sm font-medium max-w-[90px] truncate">{user.name || 'User'}</span>
+        <span className="hidden xl:inline text-sm font-semibold max-w-[90px] truncate">{user.name || 'User'}</span>
       </Link>
       <button
         onClick={handleLogout}
-        className="text-sm font-medium text-neutral-300 hover:text-red-300 px-3 py-2 rounded-lg hover:bg-red-500/[0.12] transition-colors"
+        className="text-sm font-semibold text-neutral-300 hover:text-red-300 px-3 py-2 rounded-xl hover:bg-red-500/[0.12] transition-colors"
         title="Logout"
       >
-        Logout
+        <span className="hidden lg:inline">Logout</span>
+        <span className="lg:hidden"><LogOut className="w-4 h-4" /></span>
       </button>
     </div>
   ) : null;
