@@ -67,28 +67,28 @@ function Navbar() {
       <div className="w-8 h-8 bg-indigo-400 rounded-lg flex items-center justify-center text-white font-extrabold text-xs">
         NX
       </div>
-      <span className="text-white font-extrabold text-lg tracking-tight">NOTEX</span>
+      <span className="text-white font-extrabold text-lg tracking-tight hidden sm:inline">NOTEX</span>
     </Link>
   );
 
   const authButtons = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 max-md:flex-wrap max-md:gap-1.5">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]"
+        className="text-neutral-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/[0.06]"
       >
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
       <Link
         to="/login"
-        className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
+        className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/[0.06] transition-colors"
       >
         Login
       </Link>
       <Link
         to="/register"
-        className="text-sm font-medium border border-white/[0.15] text-white px-4 py-1.5 rounded-full hover:bg-white/[0.08] transition-all relative"
+        className="text-sm font-medium border border-white/[0.15] text-white px-4 py-2 rounded-full hover:bg-white/[0.08] transition-all relative"
       >
         <span>Get Started</span>
         <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px" />
@@ -97,42 +97,42 @@ function Navbar() {
   );
 
   const userMenu = user ? (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-1.5 max-md:flex-wrap max-md:justify-start">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]"
+        className="text-neutral-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/[0.06]"
       >
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-      <Link to="/dashboard" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Dashboard">
-        <LayoutDashboard className="w-4 h-4" />
+      <Link to="/dashboard" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Dashboard">
+        <LayoutDashboard className="w-[18px] h-[18px]" />
       </Link>
-      <Link to="/upload" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Upload">
-        <UploadIcon className="w-4 h-4" />
+      <Link to="/upload" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Upload">
+        <UploadIcon className="w-[18px] h-[18px]" />
       </Link>
-      <Link to="/notifications" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Notifications">
-        <Bell className="w-4 h-4" />
+      <Link to="/notifications" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Notifications">
+        <Bell className="w-[18px] h-[18px]" />
       </Link>
-      <Link to="/bookmarks" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Bookmarks">
-        <Bookmark className="w-4 h-4" />
+      <Link to="/bookmarks" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Bookmarks">
+        <Bookmark className="w-[18px] h-[18px]" />
       </Link>
       {user.role === 'admin' && (
-        <Link to="/admin" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Admin">
-          <Shield className="w-4 h-4" />
+        <Link to="/admin" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Admin">
+          <Shield className="w-[18px] h-[18px]" />
         </Link>
       )}
       <Link to="/profile" className="flex items-center gap-1.5 ml-1 text-neutral-300 hover:text-white transition-colors" title="Profile">
-        <div className="w-7 h-7 bg-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+        <div className="w-8 h-8 bg-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold ring-2 ring-white/10">
           {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
         </div>
       </Link>
       <button
         onClick={handleLogout}
-        className="text-neutral-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
+        className="text-neutral-400 hover:text-red-400 p-2 rounded-full hover:bg-red-500/[0.08] transition-colors"
         title="Logout"
       >
-        <LogOut className="w-4 h-4" />
+        <LogOut className="w-[18px] h-[18px]" />
       </button>
     </div>
   ) : null;
