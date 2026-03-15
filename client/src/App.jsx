@@ -14,7 +14,7 @@ import MaterialFiles from "./pages/MaterialFiles.jsx";
 import Home from './pages/Home.jsx';
 import ResourcesLite from "./pages/ResourcesLite.jsx";
 import { FloatingNav } from '@/components/ui/floating-navbar';
-import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, Bell, Bookmark, User, LogOut, Sun, Moon } from 'lucide-react';
+import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, Bell, Bookmark, User, LogOut } from 'lucide-react';
 
 // New feature pages
 import Profile from './pages/Profile.jsx';
@@ -63,81 +63,76 @@ function Navbar() {
   ];
 
   const logo = (
-    <Link to="/" className="flex items-center gap-2.5 no-underline group">
-      <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-shadow">
+    <Link to="/" className="flex items-center gap-2 no-underline">
+      <div className="w-8 h-8 bg-indigo-400 rounded-lg flex items-center justify-center text-white font-extrabold text-xs">
         NX
       </div>
-      <span className="text-white font-bold text-lg tracking-tight hidden sm:inline">NOTEX</span>
+      <span className="text-white font-extrabold text-lg tracking-tight">NOTEX</span>
     </Link>
   );
 
   const authButtons = (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        className="text-neutral-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/[0.06]"
+        className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]"
       >
-        {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        {theme === 'dark' ? '☀️' : '🌙'}
       </button>
       <Link
         to="/login"
-        className="text-[13px] font-medium text-neutral-300 hover:text-white px-4 py-2 rounded-full hover:bg-white/[0.06] transition-all"
+        className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
       >
-        Log in
+        Login
       </Link>
       <Link
         to="/register"
-        className="text-[13px] font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2 rounded-full hover:opacity-90 transition-all shadow-lg shadow-indigo-500/25"
+        className="text-sm font-medium border border-white/[0.15] text-white px-4 py-1.5 rounded-full hover:bg-white/[0.08] transition-all relative"
       >
-        Get Started
+        <span>Get Started</span>
+        <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px" />
       </Link>
     </div>
   );
 
   const userMenu = user ? (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        className="text-neutral-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/[0.06]"
+        className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.05]"
       >
-        {theme === 'dark' ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
+        {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-
-      <div className="w-px h-5 bg-white/[0.1] mx-1" />
-
-      <Link to="/dashboard" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Dashboard">
-        <LayoutDashboard className="w-[18px] h-[18px]" />
+      <Link to="/dashboard" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Dashboard">
+        <LayoutDashboard className="w-4 h-4" />
       </Link>
-      <Link to="/upload" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Upload">
-        <UploadIcon className="w-[18px] h-[18px]" />
+      <Link to="/upload" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Upload">
+        <UploadIcon className="w-4 h-4" />
       </Link>
-      <Link to="/notifications" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors relative" title="Notifications">
-        <Bell className="w-[18px] h-[18px]" />
+      <Link to="/notifications" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Notifications">
+        <Bell className="w-4 h-4" />
       </Link>
-      <Link to="/bookmarks" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Bookmarks">
-        <Bookmark className="w-[18px] h-[18px]" />
+      <Link to="/bookmarks" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Bookmarks">
+        <Bookmark className="w-4 h-4" />
       </Link>
       {user.role === 'admin' && (
-        <Link to="/admin" className="text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/[0.06] transition-colors" title="Admin">
-          <Shield className="w-[18px] h-[18px]" />
+        <Link to="/admin" className="text-neutral-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" title="Admin">
+          <Shield className="w-4 h-4" />
         </Link>
       )}
-
-      <div className="w-px h-5 bg-white/[0.1] mx-1" />
-
-      <Link to="/profile" className="flex items-center gap-2 ml-0.5 group" title="Profile">
-        <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-shadow ring-2 ring-white/[0.1]">
+      <Link to="/profile" className="flex items-center gap-1.5 ml-1 text-neutral-300 hover:text-white transition-colors" title="Profile">
+        <div className="w-7 h-7 bg-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
           {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
         </div>
       </Link>
       <button
         onClick={handleLogout}
-        className="text-neutral-400 hover:text-red-400 p-2 rounded-full hover:bg-red-500/[0.08] transition-all"
+        className="text-neutral-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
         title="Logout"
       >
-        <LogOut className="w-[18px] h-[18px]" />
+        <LogOut className="w-4 h-4" />
       </button>
     </div>
   ) : null;
