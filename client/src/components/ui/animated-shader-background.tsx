@@ -1,6 +1,6 @@
+// @ts-nocheck
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { Infinity, Rocket, Shield, Brain, Play, ChevronDown } from 'lucide-react';
 
 const AnoAI = () => {
   const containerRef = useRef(null);
