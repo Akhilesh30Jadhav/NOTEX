@@ -14,6 +14,7 @@ import MaterialFiles from "./pages/MaterialFiles.jsx";
 import Home from './pages/Home.jsx';
 import ResourcesLite from "./pages/ResourcesLite.jsx";
 import { FloatingNav } from '@/components/ui/floating-navbar';
+import AnoAI from '@/components/ui/animated-shader-background';
 import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, Bell, Bookmark, User, LogOut } from 'lucide-react';
 
 // New feature pages
@@ -153,6 +154,7 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
+          <AnoAI />
           <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
             <Navbar />
             <Routes>
