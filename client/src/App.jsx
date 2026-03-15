@@ -15,7 +15,7 @@ import Home from './pages/Home.jsx';
 import ResourcesLite from "./pages/ResourcesLite.jsx";
 import { FloatingNav } from '@/components/ui/floating-navbar';
 import AnoAI from '@/components/ui/animated-shader-background';
-import { Home as HomeIcon, BookOpen, Info, Mail, LayoutDashboard, Upload as UploadIcon, Shield, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain, LogOut } from 'lucide-react';
+import { Home as HomeIcon, BookOpen, Info, Mail, MessageSquare, MessageCircle, Video, Calculator, CalendarDays, ClipboardList, FileEdit, Trophy, CalendarCheck, Sparkles, Brain } from 'lucide-react';
 
 // New feature pages
 import Profile from './pages/Profile.jsx';
@@ -65,19 +65,19 @@ function Navbar() {
 
   const logo = (
     <Link to="/" className="flex items-center gap-2 no-underline">
-      <div className="w-7 h-7 bg-indigo-500 rounded-md flex items-center justify-center text-white font-extrabold text-[10px]">
+      <div className="w-7 h-7 bg-indigo-500 rounded-md flex items-center justify-center text-white font-bold text-[10px]">
         NX
       </div>
-      <span className="text-white font-bold text-xl tracking-tight hidden sm:inline">NOTEX</span>
+      <span className="text-white font-semibold text-lg tracking-tight hidden sm:inline">NOTEX</span>
     </Link>
   );
 
   const authButtons = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        className="text-neutral-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/[0.08]"
+        className="text-neutral-300 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/[0.08]"
       >
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
@@ -89,7 +89,7 @@ function Navbar() {
       </Link>
       <Link
         to="/register"
-        className="text-sm font-semibold border border-indigo-400/50 text-white px-3.5 py-1.5 rounded-lg bg-indigo-500/25 hover:bg-indigo-500/35 transition-colors"
+        className="text-sm font-medium border border-indigo-400/50 text-white px-3.5 py-1.5 rounded-lg bg-indigo-500/25 hover:bg-indigo-500/35 transition-colors"
       >
         Get Started
       </Link>
@@ -97,7 +97,7 @@ function Navbar() {
   );
 
   const userMenu = user ? (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5">
       <button
         onClick={toggleTheme}
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
@@ -108,14 +108,6 @@ function Navbar() {
       <Link to="/dashboard" className="text-sm font-medium text-neutral-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.08] transition-colors" title="Dashboard">
         Dashboard
       </Link>
-      <Link to="/upload" className="hidden lg:inline text-sm font-medium text-neutral-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.08] transition-colors" title="Upload">
-        Upload
-      </Link>
-      {user.role === 'admin' && (
-        <Link to="/admin" className="hidden xl:inline text-sm font-medium text-neutral-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.08] transition-colors" title="Admin">
-          Admin
-        </Link>
-      )}
       <Link to="/profile" className="flex items-center gap-2 pl-1 text-neutral-300 hover:text-white transition-colors" title="Profile">
         <div className="w-7 h-7 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-semibold">
           {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
